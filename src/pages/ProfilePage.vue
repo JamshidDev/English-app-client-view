@@ -6,7 +6,6 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { useTheme } from '@/composables/useTheme'
 import { useLanguage, languages } from '@/composables/useLanguage'
 import { useTelegram } from '@/composables/useTelegram'
-import { formatDate, formatPhone } from '@/utils/helpers'
 import { APP_VERSION } from '@/utils/constants'
 import StatsCard from '@/components/profile/StatsCard.vue'
 import AchievementBadge from '@/components/profile/AchievementBadge.vue'
@@ -15,7 +14,7 @@ const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 const { theme, toggleTheme } = useTheme()
-const { currentLanguage, setLanguage, currentLanguageOption } = useLanguage()
+const { currentLanguage, setLanguage } = useLanguage()
 const { hapticImpact } = useTelegram()
 
 const isDark = computed(() => theme.value === 'dark')

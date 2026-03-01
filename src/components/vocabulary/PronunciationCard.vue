@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { Word } from '@/types/vocabulary'
+import type { VocabularyItem } from '@/types/vocabulary'
 
 interface Props {
-  word: Word
+  word: VocabularyItem
   isRecording: boolean
   isProcessing: boolean
   result: {
@@ -49,7 +49,7 @@ const buttonHint = computed(() => {
       <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
         {{ word.word }}
       </h2>
-      <p class="text-lg text-gray-500 dark:text-gray-400 mb-4">{{ word.transcription }}</p>
+      <p v-if="word.transcription" class="text-lg text-gray-500 dark:text-gray-400 mb-4">{{ word.transcription }}</p>
 
       <!-- Listen Button -->
       <button

@@ -74,7 +74,7 @@ const initAnswersFromQuiz = (data: QuizData) => {
   correctCount.value = Array.from(answersMap.value.values()).filter(a => a.correct).length
 
   // Agar birinchi savol oldin javob berilgan bo'lsa
-  if (firstUnanswered !== 0 || firstUnanswered === -1) {
+  if (firstUnanswered !== 0) {
     restoreQuestionState(currentIndex.value)
   }
 }

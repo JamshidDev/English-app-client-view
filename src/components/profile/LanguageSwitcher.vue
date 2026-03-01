@@ -15,6 +15,11 @@ const handleSelect = (lang: typeof languages[0]) => {
   setLanguage(lang.code)
   showPicker.value = false
 }
+
+const onActionSelect = (action: { value: string }) => {
+  const lang = languages.find(l => l.code === action.value)
+  if (lang) handleSelect(lang)
+}
 </script>
 
 <template>
@@ -36,7 +41,7 @@ const handleSelect = (lang: typeof languages[0]) => {
       v-model:show="showPicker"
       :actions="languages.map(l => ({ name: `${l.flag} ${l.label}`, value: l.code }))"
       cancel-text="Cancel"
-      @select="(action) => handleSelect(languages.find(l => l.code === action.value)!)"
+      @select="onActionSelect"
     />
   </div>
 </template>

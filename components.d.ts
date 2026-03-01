@@ -13,8 +13,6 @@ declare module 'vue' {
     AppNavbar: typeof import('./src/components/common/AppNavbar.vue')['default']
     CategoryPinList: typeof import('./src/components/vocabulary/CategoryPinList.vue')['default']
     CongratsStep: typeof import('./src/components/register/CongratsStep.vue')['default']
-    DailyWord: typeof import('./src/components/home/DailyWord.vue')['default']
-    FavoriteWords: typeof import('./src/components/vocabulary/FavoriteWords.vue')['default']
     GoalStep: typeof import('./src/components/register/GoalStep.vue')['default']
     LanguageSwitcher: typeof import('./src/components/profile/LanguageSwitcher.vue')['default']
     LessonCard: typeof import('./src/components/home/LessonCard.vue')['default']
@@ -26,9 +24,6 @@ declare module 'vue' {
     PhoneStep: typeof import('./src/components/register/PhoneStep.vue')['default']
     ProgressBanner: typeof import('./src/components/home/ProgressBanner.vue')['default']
     PronunciationCard: typeof import('./src/components/vocabulary/PronunciationCard.vue')['default']
-    QuizCard: typeof import('./src/components/quiz/QuizCard.vue')['default']
-    QuizOptions: typeof import('./src/components/quiz/QuizOptions.vue')['default']
-    QuizResult: typeof import('./src/components/quiz/QuizResult.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatsCard: typeof import('./src/components/profile/StatsCard.vue')['default']
@@ -41,9 +36,6 @@ declare module 'vue' {
     VanDropdownMenu: typeof import('vant/es')['DropdownMenu']
     VanField: typeof import('vant/es')['Field']
     VanLoading: typeof import('vant/es')['Loading']
-    VanProgress: typeof import('vant/es')['Progress']
     VanSwitch: typeof import('vant/es')['Switch']
-    WordCard: typeof import('./src/components/vocabulary/WordCard.vue')['default']
-    WordList: typeof import('./src/components/vocabulary/WordList.vue')['default']
   }
 }

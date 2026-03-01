@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useTelegram } from '@/composables/useTelegram'
 
 const emit = defineEmits<{
@@ -9,7 +8,6 @@ const emit = defineEmits<{
   (e: 'next'): void
 }>()
 
-const { t } = useI18n()
 const { tg, telegramId, hapticImpact, hapticNotification } = useTelegram()
 
 const isLoading = ref(false)

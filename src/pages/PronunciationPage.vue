@@ -26,20 +26,19 @@ const {
 
 const { check, stats, resetStats } = usePronunciationCheck()
 
-const setId = computed(() => Number(route.params.setId))
-const wordSet = computed(() => vocabStore.getWordSetById(setId.value))
+const collectionId = computed(() => route.params.setId as string)
 const currentIndex = ref(0)
 const isComplete = ref(false)
 const currentResult = ref<{ isCorrect: boolean; recognizedText: string } | null>(null)
 
 const currentWord = computed(() => {
-  if (!wordSet.value) return null
-  return wordSet.value.words[currentIndex.value]
+  if (vocabStore.words.length === 0) return null
+  return vocabStore.words[currentIndex.value]
 })
 
 const progress = computed(() => {
-  if (!wordSet.value) return 0
-  return ((currentIndex.value + 1) / wordSet.value.words.length) * 100
+  if (vocabStore.words.length === 0) return 0
+  return ((currentIndex.value + 1) / vocabStore.words.length) * 100
 })
 
 const handleBack = () => {
@@ -84,7 +83,7 @@ const nextWord = () => {
   currentResult.value = null
   resetRecorder()
 
-  if (wordSet.value && currentIndex.value < wordSet.value.words.length - 1) {
+  if (currentIndex.value < vocabStore.words.length - 1) {
     currentIndex.value++
   } else {
     isComplete.value = true
@@ -111,10 +110,11 @@ const restart = () => {
   resetStats()
 }
 
-onMounted(() => {
+onMounted(async () => {
   vocabStore.initVocab()
   showBackButton()
   onBackButtonClick(handleBack)
+  await vocabStore.fetchWords(collectionId.value)
 })
 
 onUnmounted(() => {
@@ -134,7 +134,7 @@ onUnmounted(() => {
           </svg>
         </button>
         <span class="font-medium text-gray-900 dark:text-white">
-          {{ currentIndex + 1 }}/{{ wordSet?.words.length || 0 }}
+          {{ currentIndex + 1 }}/{{ vocabStore.words.length }}
         </span>
         <div class="w-10" />
       </div>
@@ -144,8 +144,13 @@ onUnmounted(() => {
       </div>
     </div>
 
+    <!-- Loading -->
+    <div v-if="vocabStore.isLoadingWords" class="flex items-center justify-center h-64">
+      <van-loading size="40" />
+    </div>
+
     <!-- Not Supported Warning -->
-    <div v-if="!isSupported" class="px-4 py-12 text-center">
+    <div v-else-if="!isSupported" class="px-4 py-12 text-center">
       <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-2xl p-6">
         <div class="text-5xl mb-4">⚠️</div>
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">

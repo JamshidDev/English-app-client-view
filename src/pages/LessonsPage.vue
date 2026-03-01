@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useLessonStore } from '@/stores/useLessonStore'
 import { useTelegram } from '@/composables/useTelegram'
@@ -8,7 +7,6 @@ import LessonCard from '@/components/home/LessonCard.vue'
 import type { LessonLevel } from '@/types/lesson'
 
 const { t } = useI18n()
-const router = useRouter()
 const lessonStore = useLessonStore()
 const { hapticImpact } = useTelegram()
 

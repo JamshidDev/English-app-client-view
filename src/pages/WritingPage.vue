@@ -6,6 +6,7 @@ import { useVocabStore } from '@/stores/useVocabStore'
 import { useTelegram } from '@/composables/useTelegram'
 import { useLanguage } from '@/composables/useLanguage'
 import { shuffleArray } from '@/utils/helpers'
+import type { VocabularyItem } from '@/types/vocabulary'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -14,10 +15,9 @@ const vocabStore = useVocabStore()
 const { hapticImpact, hapticNotification, showBackButton, hideBackButton, onBackButtonClick, offBackButtonClick } = useTelegram()
 const { currentLanguage } = useLanguage()
 
-const setId = computed(() => Number(route.params.setId))
-const wordSet = computed(() => vocabStore.getWordSetById(setId.value))
+const collectionId = computed(() => route.params.setId as string)
 
-const shuffledWords = ref<typeof wordSet.value.words>([])
+const shuffledWords = ref<VocabularyItem[]>([])
 const currentIndex = ref(0)
 const userInput = ref('')
 const isChecked = ref(false)
@@ -35,8 +35,8 @@ const progress = computed(() => {
 
 const getTranslation = () => {
   if (!currentWord.value) return ''
-  if (currentLanguage.value === 'ru') return currentWord.value.translationRu
-  return currentWord.value.translationUz
+  if (currentLanguage.value === 'ru') return currentWord.value.wordTranslate.ru
+  return currentWord.value.wordTranslate.uz
 }
 
 const handleBack = () => {
@@ -87,7 +87,7 @@ const toggleHint = () => {
 
 const restart = () => {
   hapticImpact('medium')
-  shuffledWords.value = shuffleArray([...wordSet.value!.words])
+  shuffledWords.value = shuffleArray([...vocabStore.words])
   currentIndex.value = 0
   userInput.value = ''
   isChecked.value = false
@@ -97,13 +97,14 @@ const restart = () => {
   showHint.value = false
 }
 
-onMounted(() => {
+onMounted(async () => {
   vocabStore.initVocab()
-  if (wordSet.value) {
-    shuffledWords.value = shuffleArray([...wordSet.value.words])
-  }
   showBackButton()
   onBackButtonClick(handleBack)
+  await vocabStore.fetchWords(collectionId.value)
+  if (vocabStore.words.length > 0) {
+    shuffledWords.value = shuffleArray([...vocabStore.words])
+  }
 })
 
 onUnmounted(() => {
@@ -133,8 +134,13 @@ onUnmounted(() => {
       </div>
     </div>
 
+    <!-- Loading -->
+    <div v-if="vocabStore.isLoadingWords" class="flex items-center justify-center h-64">
+      <van-loading size="40" />
+    </div>
+
     <!-- Complete Screen -->
-    <div v-if="isComplete" class="px-4 py-12 text-center">
+    <div v-else-if="isComplete" class="px-4 py-12 text-center">
       <div class="text-6xl mb-6">✍️</div>
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
         {{ t('vocabulary.test.score') }}
@@ -145,7 +151,7 @@ onUnmounted(() => {
           {{ correctCount }}/{{ shuffledWords.length }}
         </p>
         <p class="text-gray-500 dark:text-gray-400 mt-2">
-          {{ Math.round((correctCount / shuffledWords.length) * 100) }}%
+          {{ shuffledWords.length > 0 ? Math.round((correctCount / shuffledWords.length) * 100) : 0 }}%
         </p>
       </div>
 
