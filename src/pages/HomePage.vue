@@ -25,8 +25,8 @@ const authStore = useAuthStore()
           </div>
         </div>
         <div class="flex items-center gap-1 bg-white/20 px-2 py-1 rounded-full">
-          <span class="text-sm">🔥</span>
-          <span class="text-white text-xs font-bold">{{ authStore.userStats.streakDays }}</span>
+          <span class="text-sm">🇬🇧</span>
+          <span class="text-white text-xs font-bold">Pro</span>
         </div>
       </div>
     </div>
@@ -48,42 +48,5 @@ const authStore = useAuthStore()
       </div>
     </div>
 
-    <!-- Stats Preview -->
-    <div class="px-4 mt-4">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">
-          {{ t('profile.stats') }}
-        </h3>
-
-        <div class="grid grid-cols-3 gap-3">
-          <div class="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-            <p class="text-xl font-bold text-blue-600 dark:text-blue-400">
-              {{ authStore.userStats.wordsLearned }}
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ t('profile.words_learned') }}
-            </p>
-          </div>
-
-          <div class="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
-            <p class="text-xl font-bold text-green-600 dark:text-green-400">
-              {{ authStore.userStats.quizAccuracy }}%
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ t('profile.quiz_accuracy') }}
-            </p>
-          </div>
-
-          <div class="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
-            <p class="text-xl font-bold text-orange-600 dark:text-orange-400">
-              {{ authStore.userStats.streakDays }}
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ t('profile.streak') }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>

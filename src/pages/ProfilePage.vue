@@ -7,8 +7,6 @@ import { useTheme } from '@/composables/useTheme'
 import { useLanguage, languages } from '@/composables/useLanguage'
 import { useTelegram } from '@/composables/useTelegram'
 import { APP_VERSION } from '@/utils/constants'
-import StatsCard from '@/components/profile/StatsCard.vue'
-import AchievementBadge from '@/components/profile/AchievementBadge.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -18,14 +16,6 @@ const { currentLanguage, setLanguage } = useLanguage()
 const { hapticImpact } = useTelegram()
 
 const isDark = computed(() => theme.value === 'dark')
-
-const achievements = [
-  { icon: '📚', key: 'first_word', unlocked: authStore.userStats.wordsLearned >= 1 },
-  { icon: '📖', key: 'first_lesson', unlocked: authStore.userStats.lessonsCompleted >= 1 },
-  { icon: '🎯', key: 'quiz_master', unlocked: authStore.userStats.quizAccuracy >= 80 },
-  { icon: '🔥', key: 'week_streak', unlocked: authStore.userStats.streakDays >= 7 },
-  { icon: '🏆', key: 'vocabulary_pro', unlocked: authStore.userStats.wordsLearned >= 20 }
-]
 
 const handleThemeToggle = () => {
   hapticImpact('light')
@@ -70,26 +60,6 @@ const confirmLogout = () => {
             ID: {{ authStore.user?.telegramId }}
           </p>
         </div>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <StatsCard class="mb-6" />
-
-    <!-- Achievements -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm mb-6">
-      <h3 class="font-semibold text-gray-900 dark:text-white mb-4">
-        {{ t('profile.achievements') }}
-      </h3>
-
-      <div class="grid grid-cols-5 gap-2">
-        <AchievementBadge
-          v-for="achievement in achievements"
-          :key="achievement.key"
-          :icon="achievement.icon"
-          :title="t(`achievements.${achievement.key}`)"
-          :unlocked="achievement.unlocked"
-        />
       </div>
     </div>
 
@@ -146,7 +116,7 @@ const confirmLogout = () => {
       </van-button>
     </div>
 
-    <!-- Logout Confirmation Dialog -->
+    <!-- Logout Dialog -->
     <van-dialog
       v-model:show="showLogoutDialog"
       :title="t('profile.logout')"

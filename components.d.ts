@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AchievementBadge: typeof import('./src/components/profile/AchievementBadge.vue')['default']
     AppHeader: typeof import('./src/components/common/AppHeader.vue')['default']
     AppLoader: typeof import('./src/components/common/AppLoader.vue')['default']
     AppNavbar: typeof import('./src/components/common/AppNavbar.vue')['default']
@@ -15,10 +14,7 @@ declare module 'vue' {
     CongratsStep: typeof import('./src/components/register/CongratsStep.vue')['default']
     GoalStep: typeof import('./src/components/register/GoalStep.vue')['default']
     LanguageSwitcher: typeof import('./src/components/profile/LanguageSwitcher.vue')['default']
-    LessonCard: typeof import('./src/components/home/LessonCard.vue')['default']
     LessonComplete: typeof import('./src/components/lessons/LessonComplete.vue')['default']
-    LessonDetail: typeof import('./src/components/lessons/LessonDetail.vue')['default']
-    LessonList: typeof import('./src/components/lessons/LessonList.vue')['default']
     ModuleCard: typeof import('./src/components/common/ModuleCard.vue')['default']
     NameStep: typeof import('./src/components/register/NameStep.vue')['default']
     PhoneStep: typeof import('./src/components/register/PhoneStep.vue')['default']
@@ -26,7 +22,6 @@ declare module 'vue' {
     PronunciationCard: typeof import('./src/components/vocabulary/PronunciationCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StatsCard: typeof import('./src/components/profile/StatsCard.vue')['default']
     ThemeSwitcher: typeof import('./src/components/common/ThemeSwitcher.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
