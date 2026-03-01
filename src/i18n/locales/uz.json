@@ -1,0 +1,178 @@
+{
+  "common": {
+    "next": "Davom etish",
+    "back": "Orqaga",
+    "start": "Boshlash",
+    "loading": "Yuklanmoqda...",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "confirm": "Tasdiqlash",
+    "error": "Xatolik",
+    "success": "Muvaffaqiyatli",
+    "search": "Qidirish",
+    "noData": "Ma'lumot topilmadi",
+    "retry": "Qayta urinish"
+  },
+  "register": {
+    "phone_title": "Telefon raqamingizni kiriting",
+    "phone_placeholder": "90 123 45 67",
+    "phone_error": "Telefon raqam noto'g'ri formatda",
+    "name_title": "Ismingizni kiriting",
+    "first_name": "Ism",
+    "last_name": "Familiya",
+    "first_name_error": "Ism kiritilishi shart",
+    "last_name_error": "Familiya kiritilishi shart",
+    "goal_title": "Nima maqsadda o'rganmoqchisiz?",
+    "goal_error": "Kamida bitta maqsad tanlang",
+    "congrats_title": "Tabriklaymiz!",
+    "congrats_message": "Siz muvaffaqiyatli ro'yxatdan o'tdingiz!",
+    "congrats_subtitle": "Ingliz tilini o'rganishga tayyormisiz?",
+    "step": "Qadam"
+  },
+  "goals": {
+    "travel": "Sayohat uchun",
+    "career": "Ish/Karyera uchun",
+    "education": "Ta'lim/O'qish uchun",
+    "daily": "Kundalik muloqot uchun",
+    "ielts": "IELTS/CEFR tayyorgarlik",
+    "other": "Boshqa"
+  },
+  "nav": {
+    "home": "Asosiy",
+    "vocabulary": "Vocabulary",
+    "profile": "Profil"
+  },
+  "modules": {
+    "vocabulary": "Vocabulary",
+    "vocabulary_desc": "So'zlarni o'rganing",
+    "grammar": "Grammatika",
+    "grammar_desc": "Grammatika qoidalari",
+    "listening": "Listening",
+    "listening_desc": "Tinglash ko'nikmalari",
+    "speaking": "Speaking",
+    "speaking_desc": "Gapirish mashqlari",
+    "coming_soon": "Tez kunda"
+  },
+  "home": {
+    "welcome": "Xush kelibsiz",
+    "select_module": "Bo'limni tanlang"
+  },
+  "vocabulary": {
+    "title": "Vocabulary",
+    "categories": {
+      "all": "Barchasi",
+      "basic": "Oddiy",
+      "intermediate": "O'rta",
+      "advanced": "Murakkab",
+      "ielts": "IELTS",
+      "travel": "Sayohat",
+      "business": "Biznes",
+      "it": "IT/Texnologiya",
+      "daily": "Kundalik"
+    },
+    "word_set": "to'plam",
+    "words_count": "ta so'z",
+    "progress": "Progress",
+    "learned": "o'rganildi",
+    "actions": {
+      "learn": "Yodlash",
+      "test": "Test",
+      "writing": "Writing",
+      "pronunciation": "Talaffuz"
+    },
+    "learn": {
+      "title": "So'zni yodlash",
+      "example": "Misol",
+      "translation": "Tarjima",
+      "example_translation": "Misol tarjimasi",
+      "previous": "Oldingi",
+      "next": "Keyingi",
+      "mark_learned": "O'rgandim",
+      "complete_title": "Tabriklaymiz!",
+      "complete_message": "Siz barcha so'zlarni ko'rib chiqdingiz!",
+      "words_learned": "O'rganilgan so'zlar",
+      "restart": "Qaytadan boshlash",
+      "go_back": "Orqaga qaytish"
+    },
+    "test": {
+      "title": "Test",
+      "choose_correct": "To'g'ri tarjimani tanlang",
+      "correct": "To'g'ri!",
+      "incorrect": "Noto'g'ri!",
+      "score": "Natija",
+      "try_again": "Qayta urinish",
+      "question": "Savol",
+      "finish": "Yakunlash"
+    },
+    "writing": {
+      "title": "Writing",
+      "type_word": "So'zni ingliz tilida yozing",
+      "check": "Tekshirish",
+      "correct": "To'g'ri!",
+      "incorrect": "Noto'g'ri! To'g'ri javob:",
+      "hint": "Ko'rsatma",
+      "skip": "O'tkazib yuborish"
+    },
+    "pronunciation": {
+      "title": "Talaffuz mashqi",
+      "instruction": "Shu so'zni talaffuz qiling",
+      "speaking": "Gapiring...",
+      "processing": "Tekshirilmoqda...",
+      "listen": "Tinglash",
+      "tap_to_speak": "Bosib gapiring",
+      "tap_to_stop": "Tugallash uchun bosing",
+      "tap_to_retry": "Qayta urinish",
+      "excellent": "Ajoyib!",
+      "try_again": "Qayta urinib ko'ring",
+      "you_said": "Siz aytdingiz",
+      "correct_is": "To'g'risi",
+      "not_supported": "Brauzeringiz ovoz yozishni qo'llab-quvvatlamaydi",
+      "use_chrome": "Chrome yoki Edge brauzeridan foydalaning",
+      "listen_only": "Faqat tinglash rejimi",
+      "complete_title": "Tabriklaymiz!",
+      "complete_message": "Talaffuz mashqi yakunlandi",
+      "total_correct": "To'g'ri",
+      "total_incorrect": "Noto'g'ri",
+      "accuracy": "Aniqlik",
+      "restart": "Qayta boshlash",
+      "go_back": "Orqaga qaytish",
+      "no_speech": "Ovoz eshitilmadi. Qayta urinib ko'ring",
+      "permission_denied": "Mikrofonga ruxsat berilmadi",
+      "no_microphone": "Mikrofon topilmadi",
+      "error_generic": "Xatolik yuz berdi"
+    },
+    "settings": {
+      "title": "Kategoriya sozlamalari",
+      "info": "PIN qilgan kategoriyalaringiz tab'larda ko'rinadi. Hech biri tanlanmasa, barcha kategoriyalar ko'rinadi.",
+      "select_categories": "Kategoriyalarni tanlang",
+      "pinned": "ta tanlandi",
+      "reset_hint": "Barcha tanlovlarni bekor qilish uchun hech birini tanlamang"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "stats": "Statistika",
+    "words_learned": "O'rganilgan so'zlar",
+    "lessons_completed": "Tugatilgan darslar",
+    "quiz_accuracy": "Test aniqligi",
+    "streak": "Ketma-ket kunlar",
+    "achievements": "Yutuqlar",
+    "settings": "Sozlamalar",
+    "theme": "Mavzu",
+    "language": "Til",
+    "dark_mode": "Qorong'i rejim",
+    "light_mode": "Yorug' rejim",
+    "about": "Ilova haqida",
+    "version": "Versiya",
+    "joined": "Ro'yxatdan o'tgan",
+    "logout": "Chiqish",
+    "edit_profile": "Profilni tahrirlash"
+  },
+  "achievements": {
+    "first_word": "Birinchi so'z",
+    "first_lesson": "Birinchi dars",
+    "quiz_master": "Test ustasi",
+    "week_streak": "Haftalik streak",
+    "vocabulary_pro": "Lug'at ustasi"
+  }
+}

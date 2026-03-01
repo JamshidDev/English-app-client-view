@@ -1,0 +1,178 @@
+{
+  "common": {
+    "next": "Продолжить",
+    "back": "Назад",
+    "start": "Начать",
+    "loading": "Загрузка...",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "error": "Ошибка",
+    "success": "Успешно",
+    "search": "Поиск",
+    "noData": "Данные не найдены",
+    "retry": "Повторить"
+  },
+  "register": {
+    "phone_title": "Введите номер телефона",
+    "phone_placeholder": "90 123 45 67",
+    "phone_error": "Неверный формат номера телефона",
+    "name_title": "Введите ваше имя",
+    "first_name": "Имя",
+    "last_name": "Фамилия",
+    "first_name_error": "Имя обязательно",
+    "last_name_error": "Фамилия обязательна",
+    "goal_title": "С какой целью хотите изучать?",
+    "goal_error": "Выберите хотя бы одну цель",
+    "congrats_title": "Поздравляем!",
+    "congrats_message": "Вы успешно зарегистрировались!",
+    "congrats_subtitle": "Готовы изучать английский язык?",
+    "step": "Шаг"
+  },
+  "goals": {
+    "travel": "Для путешествий",
+    "career": "Для работы/карьеры",
+    "education": "Для учебы/образования",
+    "daily": "Для повседневного общения",
+    "ielts": "Подготовка к IELTS/CEFR",
+    "other": "Другое"
+  },
+  "nav": {
+    "home": "Главная",
+    "vocabulary": "Словарь",
+    "profile": "Профиль"
+  },
+  "modules": {
+    "vocabulary": "Словарь",
+    "vocabulary_desc": "Учите слова",
+    "grammar": "Грамматика",
+    "grammar_desc": "Правила грамматики",
+    "listening": "Аудирование",
+    "listening_desc": "Навыки аудирования",
+    "speaking": "Говорение",
+    "speaking_desc": "Упражнения на говорение",
+    "coming_soon": "Скоро"
+  },
+  "home": {
+    "welcome": "Добро пожаловать",
+    "select_module": "Выберите раздел"
+  },
+  "vocabulary": {
+    "title": "Словарь",
+    "categories": {
+      "all": "Все",
+      "basic": "Базовый",
+      "intermediate": "Средний",
+      "advanced": "Продвинутый",
+      "ielts": "IELTS",
+      "travel": "Путешествия",
+      "business": "Бизнес",
+      "it": "IT/Технологии",
+      "daily": "Повседневный"
+    },
+    "word_set": "набор",
+    "words_count": "слов",
+    "progress": "Прогресс",
+    "learned": "изучено",
+    "actions": {
+      "learn": "Учить",
+      "test": "Тест",
+      "writing": "Письмо",
+      "pronunciation": "Произношение"
+    },
+    "learn": {
+      "title": "Учить слова",
+      "example": "Пример",
+      "translation": "Перевод",
+      "example_translation": "Перевод примера",
+      "previous": "Предыдущее",
+      "next": "Следующее",
+      "mark_learned": "Выучено",
+      "complete_title": "Поздравляем!",
+      "complete_message": "Вы просмотрели все слова!",
+      "words_learned": "Выученные слова",
+      "restart": "Начать заново",
+      "go_back": "Вернуться"
+    },
+    "test": {
+      "title": "Тест",
+      "choose_correct": "Выберите правильный перевод",
+      "correct": "Правильно!",
+      "incorrect": "Неправильно!",
+      "score": "Результат",
+      "try_again": "Попробовать снова",
+      "question": "Вопрос",
+      "finish": "Завершить"
+    },
+    "writing": {
+      "title": "Письмо",
+      "type_word": "Напишите слово на английском",
+      "check": "Проверить",
+      "correct": "Правильно!",
+      "incorrect": "Неправильно! Правильный ответ:",
+      "hint": "Подсказка",
+      "skip": "Пропустить"
+    },
+    "pronunciation": {
+      "title": "Практика произношения",
+      "instruction": "Произнесите это слово",
+      "speaking": "Говорите...",
+      "processing": "Проверяем...",
+      "listen": "Прослушать",
+      "tap_to_speak": "Нажмите и говорите",
+      "tap_to_stop": "Нажмите для завершения",
+      "tap_to_retry": "Попробовать снова",
+      "excellent": "Отлично!",
+      "try_again": "Попробуйте ещё раз",
+      "you_said": "Вы сказали",
+      "correct_is": "Правильно",
+      "not_supported": "Ваш браузер не поддерживает запись голоса",
+      "use_chrome": "Используйте Chrome или Edge",
+      "listen_only": "Только режим прослушивания",
+      "complete_title": "Поздравляем!",
+      "complete_message": "Практика произношения завершена",
+      "total_correct": "Правильно",
+      "total_incorrect": "Неправильно",
+      "accuracy": "Точность",
+      "restart": "Начать заново",
+      "go_back": "Вернуться",
+      "no_speech": "Голос не распознан. Попробуйте снова",
+      "permission_denied": "Доступ к микрофону запрещён",
+      "no_microphone": "Микрофон не найден",
+      "error_generic": "Произошла ошибка"
+    },
+    "settings": {
+      "title": "Настройки категорий",
+      "info": "Выбранные категории будут отображаться во вкладках. Если ничего не выбрано, будут показаны все категории.",
+      "select_categories": "Выберите категории",
+      "pinned": "выбрано",
+      "reset_hint": "Чтобы сбросить, снимите выбор со всех категорий"
+    }
+  },
+  "profile": {
+    "title": "Профиль",
+    "stats": "Статистика",
+    "words_learned": "Выученные слова",
+    "lessons_completed": "Завершенные уроки",
+    "quiz_accuracy": "Точность тестов",
+    "streak": "Дней подряд",
+    "achievements": "Достижения",
+    "settings": "Настройки",
+    "theme": "Тема",
+    "language": "Язык",
+    "dark_mode": "Тёмный режим",
+    "light_mode": "Светлый режим",
+    "about": "О приложении",
+    "version": "Версия",
+    "joined": "Дата регистрации",
+    "logout": "Выйти",
+    "edit_profile": "Редактировать профиль"
+  },
+  "achievements": {
+    "first_word": "Первое слово",
+    "first_lesson": "Первый урок",
+    "quiz_master": "Мастер тестов",
+    "week_streak": "Недельный streak",
+    "vocabulary_pro": "Мастер словаря"
+  }
+}

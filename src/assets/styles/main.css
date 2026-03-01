@@ -1,0 +1,377 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --van-primary-color: #3b82f6;
+  --van-success-color: #22c55e;
+  --van-danger-color: #ef4444;
+  --van-warning-color: #f59e0b;
+}
+
+html.dark {
+  --van-background: #1f2937;
+  --van-background-2: #111827;
+  --van-background-3: #374151;
+  --van-text-color: #f9fafb;
+  --van-text-color-2: #d1d5db;
+  --van-text-color-3: #9ca3af;
+  --van-border-color: #374151;
+  --van-active-color: #374151;
+
+  /* Button dark mode */
+  --van-button-default-background: #374151;
+  --van-button-default-border-color: #4b5563;
+  --van-button-default-color: #f9fafb;
+  --van-button-plain-background: transparent;
+
+  /* Dialog dark mode */
+  --van-dialog-background: #1f2937;
+  --van-dialog-header-color: #f9fafb;
+  --van-dialog-message-color: #d1d5db;
+
+  /* Cell dark mode */
+  --van-cell-background: #1f2937;
+  --van-cell-text-color: #f9fafb;
+  --van-cell-label-color: #9ca3af;
+  --van-cell-value-color: #d1d5db;
+
+  /* Field dark mode */
+  --van-field-label-color: #d1d5db;
+  --van-field-input-text-color: #f9fafb;
+  --van-field-placeholder-text-color: #6b7280;
+  --van-field-background: #374151;
+
+  /* Switch dark mode */
+  --van-switch-background: #4b5563;
+
+  /* Dropdown dark mode */
+  --van-dropdown-menu-background: #1f2937;
+  --van-dropdown-menu-title-text-color: #f9fafb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none !important;
+}
+
+*:focus,
+*:active {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Selection highlight rangini o'chirish */
+::selection {
+  background: transparent;
+}
+
+::-moz-selection {
+  background: transparent;
+}
+
+/* Input va textarea da yozish uchun select ruxsat berish */
+input,
+textarea,
+[contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Button va clickable elementlar focus holatini tozalash */
+button,
+a,
+[role="button"],
+.van-button,
+.van-cell,
+.van-tab,
+.van-tabbar-item,
+.van-checkbox,
+.van-radio,
+.clickable {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+}
+
+button:focus,
+a:focus,
+[role="button"]:focus,
+.van-button:focus,
+.van-cell:focus,
+.van-tab:focus,
+.van-tabbar-item:focus,
+.clickable:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Focus-visible faqat keyboard navigation uchun */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--van-primary-color, #3b82f6);
+  outline-offset: 2px;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+#app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+}
+
+/* Telegram Mini App styles */
+.tg-viewport {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Flip card animation */
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Slide transition */
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-left-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-right-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Confetti animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  animation: confetti-fall 3s ease-in-out forwards;
+}
+
+/* Progress dots */
+.progress-dot {
+  @apply w-2.5 h-2.5 rounded-full transition-all duration-300;
+}
+
+.progress-dot.active {
+  @apply bg-primary-500 w-6;
+}
+
+.progress-dot.completed {
+  @apply bg-primary-500;
+}
+
+.progress-dot.pending {
+  @apply bg-gray-300 dark:bg-gray-600;
+}
+
+/* Vant Button Dark Mode Overrides */
+html.dark .van-button--default {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+html.dark .van-button--default.van-button--plain {
+  background-color: transparent !important;
+  border-color: #4b5563 !important;
+  color: #d1d5db !important;
+}
+
+html.dark .van-button--primary.van-button--plain {
+  background-color: transparent !important;
+  color: #60a5fa !important;
+  border-color: #60a5fa !important;
+}
+
+html.dark .van-button--danger.van-button--plain {
+  background-color: transparent !important;
+  color: #f87171 !important;
+  border-color: #f87171 !important;
+}
+
+/* Vant Dialog Dark Mode */
+html.dark .van-dialog {
+  background-color: #1f2937 !important;
+}
+
+html.dark .van-dialog__header {
+  color: #f9fafb !important;
+}
+
+html.dark .van-dialog__message {
+  color: #d1d5db !important;
+}
+
+html.dark .van-dialog__cancel {
+  color: #9ca3af !important;
+}
+
+html.dark .van-dialog__confirm {
+  color: #60a5fa !important;
+}
+
+/* Vant Cell Dark Mode */
+html.dark .van-cell {
+  background-color: transparent !important;
+}
+
+html.dark .van-cell__title {
+  color: #f9fafb !important;
+}
+
+html.dark .van-cell__value {
+  color: #d1d5db !important;
+}
+
+html.dark .van-cell::after {
+  border-color: #374151 !important;
+}
+
+/* Vant Dropdown Dark Mode */
+html.dark .van-dropdown-menu__bar {
+  background-color: transparent !important;
+}
+
+html.dark .van-dropdown-menu__title {
+  color: #d1d5db !important;
+}
+
+html.dark .van-dropdown-item__content {
+  background-color: #1f2937 !important;
+}
+
+html.dark .van-dropdown-item__option {
+  color: #f9fafb !important;
+}
+
+/* Vant Action Sheet Dark Mode */
+html.dark .van-action-sheet {
+  background-color: #1f2937 !important;
+}
+
+html.dark .van-action-sheet__item {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+html.dark .van-action-sheet__cancel {
+  background-color: #111827 !important;
+  color: #9ca3af !important;
+}
+
+html.dark .van-action-sheet__gap {
+  background-color: #111827 !important;
+}
+
+/* Vant Overlay Dark Mode */
+html.dark .van-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}

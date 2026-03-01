@@ -1,0 +1,178 @@
+{
+  "common": {
+    "next": "Continue",
+    "back": "Back",
+    "start": "Start",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "error": "Error",
+    "success": "Success",
+    "search": "Search",
+    "noData": "No data found",
+    "retry": "Retry"
+  },
+  "register": {
+    "phone_title": "Enter your phone number",
+    "phone_placeholder": "90 123 45 67",
+    "phone_error": "Invalid phone number format",
+    "name_title": "Enter your name",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "first_name_error": "First name is required",
+    "last_name_error": "Last name is required",
+    "goal_title": "What is your learning goal?",
+    "goal_error": "Select at least one goal",
+    "congrats_title": "Congratulations!",
+    "congrats_message": "You have successfully registered!",
+    "congrats_subtitle": "Ready to learn English?",
+    "step": "Step"
+  },
+  "goals": {
+    "travel": "For travel",
+    "career": "For work/career",
+    "education": "For education",
+    "daily": "For daily communication",
+    "ielts": "IELTS/CEFR preparation",
+    "other": "Other"
+  },
+  "nav": {
+    "home": "Home",
+    "vocabulary": "Vocabulary",
+    "profile": "Profile"
+  },
+  "modules": {
+    "vocabulary": "Vocabulary",
+    "vocabulary_desc": "Learn words",
+    "grammar": "Grammar",
+    "grammar_desc": "Grammar rules",
+    "listening": "Listening",
+    "listening_desc": "Listening skills",
+    "speaking": "Speaking",
+    "speaking_desc": "Speaking exercises",
+    "coming_soon": "Coming Soon"
+  },
+  "home": {
+    "welcome": "Welcome",
+    "select_module": "Select a module"
+  },
+  "vocabulary": {
+    "title": "Vocabulary",
+    "categories": {
+      "all": "All",
+      "basic": "Basic",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "ielts": "IELTS",
+      "travel": "Travel",
+      "business": "Business",
+      "it": "IT/Tech",
+      "daily": "Daily"
+    },
+    "word_set": "set",
+    "words_count": "words",
+    "progress": "Progress",
+    "learned": "learned",
+    "actions": {
+      "learn": "Learn",
+      "test": "Test",
+      "writing": "Writing",
+      "pronunciation": "Pronunciation"
+    },
+    "learn": {
+      "title": "Learn Words",
+      "example": "Example",
+      "translation": "Translation",
+      "example_translation": "Example translation",
+      "previous": "Previous",
+      "next": "Next",
+      "mark_learned": "Mark as learned",
+      "complete_title": "Congratulations!",
+      "complete_message": "You have reviewed all words!",
+      "words_learned": "Words learned",
+      "restart": "Restart",
+      "go_back": "Go back"
+    },
+    "test": {
+      "title": "Test",
+      "choose_correct": "Choose the correct translation",
+      "correct": "Correct!",
+      "incorrect": "Incorrect!",
+      "score": "Score",
+      "try_again": "Try again",
+      "question": "Question",
+      "finish": "Finish"
+    },
+    "writing": {
+      "title": "Writing",
+      "type_word": "Type the word in English",
+      "check": "Check",
+      "correct": "Correct!",
+      "incorrect": "Incorrect! Correct answer:",
+      "hint": "Hint",
+      "skip": "Skip"
+    },
+    "pronunciation": {
+      "title": "Pronunciation Practice",
+      "instruction": "Pronounce this word",
+      "speaking": "Speak now...",
+      "processing": "Checking...",
+      "listen": "Listen",
+      "tap_to_speak": "Tap to speak",
+      "tap_to_stop": "Tap to stop",
+      "tap_to_retry": "Tap to retry",
+      "excellent": "Excellent!",
+      "try_again": "Try again",
+      "you_said": "You said",
+      "correct_is": "Correct answer",
+      "not_supported": "Your browser doesn't support voice recording",
+      "use_chrome": "Please use Chrome or Edge browser",
+      "listen_only": "Listen only mode",
+      "complete_title": "Congratulations!",
+      "complete_message": "Pronunciation practice completed",
+      "total_correct": "Correct",
+      "total_incorrect": "Incorrect",
+      "accuracy": "Accuracy",
+      "restart": "Restart",
+      "go_back": "Go back",
+      "no_speech": "No speech detected. Try again",
+      "permission_denied": "Microphone access denied",
+      "no_microphone": "No microphone found",
+      "error_generic": "An error occurred"
+    },
+    "settings": {
+      "title": "Category Settings",
+      "info": "Pinned categories will be shown in tabs. If none are selected, all categories will be displayed.",
+      "select_categories": "Select categories",
+      "pinned": "selected",
+      "reset_hint": "To reset, deselect all categories"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "stats": "Statistics",
+    "words_learned": "Words learned",
+    "lessons_completed": "Lessons completed",
+    "quiz_accuracy": "Quiz accuracy",
+    "streak": "Day streak",
+    "achievements": "Achievements",
+    "settings": "Settings",
+    "theme": "Theme",
+    "language": "Language",
+    "dark_mode": "Dark mode",
+    "light_mode": "Light mode",
+    "about": "About",
+    "version": "Version",
+    "joined": "Joined",
+    "logout": "Logout",
+    "edit_profile": "Edit profile"
+  },
+  "achievements": {
+    "first_word": "First word",
+    "first_lesson": "First lesson",
+    "quiz_master": "Quiz master",
+    "week_streak": "Week streak",
+    "vocabulary_pro": "Vocabulary pro"
+  }
+}
