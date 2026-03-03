@@ -50,9 +50,11 @@ const progressDots = computed(() => {
 
     <!-- Step Content -->
     <div class="flex-1 overflow-hidden relative">
+      <!-- Steps 1-3 with transition -->
       <Transition :name="transitionName" mode="out-in">
         <PhoneStep
           v-if="currentStep === 1"
+          key="phone"
           v-model="formData.phone"
           v-model:telegramId="formData.telegramId"
           @next="nextStep"
@@ -60,6 +62,7 @@ const progressDots = computed(() => {
 
         <NameStep
           v-else-if="currentStep === 2"
+          key="name"
           v-model:firstName="formData.firstName"
           v-model:lastName="formData.lastName"
           @next="nextStep"
@@ -68,13 +71,17 @@ const progressDots = computed(() => {
 
         <GoalStep
           v-else-if="currentStep === 3"
+          key="goal"
           v-model="formData.goals"
           @next="nextStep"
           @back="prevStep"
         />
+      </Transition>
 
+      <!-- CongratsStep without transition wrapper -->
+      <Transition name="fade" appear>
         <CongratsStep
-          v-else-if="currentStep === 4"
+          v-if="currentStep === 4"
           :is-submitting="isSubmitting"
           :error="registerError"
           @complete="completeRegistration"
@@ -127,6 +134,14 @@ const progressDots = computed(() => {
 
 .slide-right-leave-to {
   transform: translateX(100%);
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from {
   opacity: 0;
 }
 </style>

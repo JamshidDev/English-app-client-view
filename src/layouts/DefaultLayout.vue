@@ -7,8 +7,8 @@ const appStore = useAppStore()
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
-    <main class="flex-1 pb-20 overflow-y-auto">
+  <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-[#0a0a0a]">
+    <main class="flex-1 pb-20">
       <slot />
     </main>
 

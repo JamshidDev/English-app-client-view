@@ -83,13 +83,9 @@ const handleBack = () => {
     </div>
 
     <div class="flex-1 relative z-10">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-6">
         {{ t('register.name_title') }}
       </h2>
-
-      <p class="text-gray-500 dark:text-gray-400 mb-8">
-        Ism va familiyangizni kiriting
-      </p>
 
       <div class="space-y-5">
         <!-- First Name -->

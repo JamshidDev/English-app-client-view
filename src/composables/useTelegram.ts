@@ -9,15 +9,6 @@ export function useTelegram() {
       tg.ready()
       tg.expand()
 
-      // Request fullscreen for newer Telegram versions (v7.0+)
-      try {
-        if (tg.requestFullscreen) {
-          tg.requestFullscreen()
-        }
-      } catch (e) {
-        // Fullscreen not supported
-      }
-
       // Disable vertical swipes to prevent accidental closing
       try {
         if (tg.disableVerticalSwipes) {

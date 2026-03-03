@@ -5,6 +5,16 @@ import { goals } from '@/data/goals'
 import { useTelegram } from '@/composables/useTelegram'
 import { useLanguage } from '@/composables/useLanguage'
 
+// SVG icon paths for each goal
+const goalIcons: Record<string, string> = {
+  travel: 'M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z',
+  career: 'M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z',
+  education: 'M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z',
+  daily: 'M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z',
+  ielts: 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z',
+  other: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'
+}
+
 const props = defineProps<{
   modelValue: string[]
 }>()
@@ -91,30 +101,58 @@ const handleBack = () => {
     </div>
 
     <div class="flex-1 relative z-10">
-      <!-- Header with Icon -->
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/20">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+      <!-- Header -->
+      <div class="w-full mb-4 relative">
+        <!-- Scattered Icons Background -->
+        <div class="absolute -inset-x-8 -inset-y-16 overflow-visible pointer-events-none">
+          <!-- Top left area -->
+          <svg class="absolute -top-8 -left-4 w-7 h-7 text-cyan-400/20 rotate-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          <svg class="absolute top-12 -left-6 w-4 h-4 text-blue-500/15 -rotate-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+          </svg>
+
+          <!-- Top right area -->
+          <svg class="absolute -top-10 right-0 w-6 h-6 text-blue-400/25 -rotate-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+          <svg class="absolute -top-4 -right-6 w-5 h-5 text-indigo-400/20 rotate-45" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+          </svg>
+
+          <!-- Middle sides -->
+          <svg class="absolute top-6 -left-8 w-5 h-5 text-indigo-500/25 rotate-90" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          <svg class="absolute top-8 -right-4 w-5 h-5 text-cyan-500/20 rotate-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+          </svg>
+
+          <!-- Bottom area -->
+          <svg class="absolute top-16 left-8 w-4 h-4 text-blue-400/15 -rotate-45" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+          </svg>
+          <svg class="absolute top-14 right-12 w-3 h-3 text-cyan-400/25 rotate-180" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
           </svg>
         </div>
-        <div>
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-            {{ t('register.goal_title') }}
-          </h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            Bir yoki bir nechta tanlang
-          </p>
-        </div>
+
+        <h2 class="text-[36px] font-bold mb-2 leading-none text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent relative z-10">
+          {{ t('register.goal_title') }}
+        </h2>
+        <p class="text-sm text-gray-400 dark:text-gray-500 text-center relative z-10">
+          Bir yoki bir nechta tanlang
+        </p>
       </div>
 
       <!-- Goals Grid -->
-      <div class="grid grid-cols-2 gap-2.5 mt-5">
+      <div class="grid grid-cols-2 gap-2.5 mt-[60px]">
         <button
           v-for="goal in goals"
           :key="goal.id"
           @click="toggleGoal(goal.key)"
-          class="relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200 active:scale-95"
+          class="relative flex flex-col items-center gap-2 p-4 rounded-3xl border-2 transition-all duration-200 active:scale-95"
           :class="[
             isSelected(goal.key)
               ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30 shadow-md shadow-primary-500/10'
@@ -131,7 +169,18 @@ const handleBack = () => {
             </svg>
           </div>
 
-          <span class="text-3xl">{{ goal.icon }}</span>
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
+            :class="[
+              isSelected(goal.key)
+                ? 'bg-primary-500 text-white'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+            ]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path :d="goalIcons[goal.key]" />
+            </svg>
+          </div>
 
           <span
             class="text-xs font-medium text-center leading-tight"
