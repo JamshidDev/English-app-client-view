@@ -40,7 +40,8 @@
   "nav": {
     "home": "Главная",
     "vocabulary": "Словарь",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "board": "Board"
   },
   "modules": {
     "vocabulary": "Словарь",
@@ -166,7 +167,10 @@
     "version": "Версия",
     "joined": "Дата регистрации",
     "logout": "Выйти",
-    "edit_profile": "Редактировать профиль"
+    "logout_confirm": "Вы действительно хотите выйти?",
+    "edit_profile": "Редактировать профиль",
+    "share": "Поделиться",
+    "rate": "Оценить"
   },
   "achievements": {
     "first_word": "Первое слово",

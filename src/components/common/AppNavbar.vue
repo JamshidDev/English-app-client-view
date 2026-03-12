@@ -11,14 +11,14 @@ const { hapticImpact } = useTelegram()
 
 const tabs = computed(() => [
   { name: 'home', path: '/home', icon: 'home', label: t('nav.home') },
-  { name: 'vocabulary', path: '/vocabulary', icon: 'vocabulary', label: t('nav.vocabulary') },
+  { name: 'board', path: '/board', icon: 'board', label: t('nav.board') },
   { name: 'profile', path: '/profile', icon: 'profile', label: t('nav.profile') }
 ])
 
 const activeTab = computed(() => {
   const path = route.path
-  if (path.startsWith('/vocabulary')) return 'vocabulary'
   if (path.startsWith('/profile')) return 'profile'
+  if (path.startsWith('/board')) return 'board'
   return 'home'
 })
 
@@ -29,8 +29,8 @@ const navigateTo = (path: string) => {
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#111111]/90 backdrop-blur-lg border-t border-gray-200/50 dark:border-white/5 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] safe-area-bottom">
-    <div class="flex items-center justify-around py-2">
+  <nav class="fixed bottom-3 left-3 right-3 z-50 safe-area-bottom">
+    <div class="flex items-center justify-around py-2.5 bg-white/70 dark:bg-[#111111]/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/40 dark:border-white/10">
       <button
         v-for="tab in tabs"
         :key="tab.name"
@@ -48,9 +48,9 @@ const navigateTo = (path: string) => {
             <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
           </svg>
 
-          <!-- Vocabulary Icon -->
-          <svg v-else-if="tab.icon === 'vocabulary'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+          <!-- Board Icon -->
+          <svg v-else-if="tab.icon === 'board'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
           </svg>
 
           <!-- Profile Icon -->

@@ -24,13 +24,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     ThemeSwitcher: typeof import('./src/components/common/ThemeSwitcher.vue')['default']
     VanButton: typeof import('vant/es')['Button']
-    VanCell: typeof import('vant/es')['Cell']
-    VanCellGroup: typeof import('vant/es')['CellGroup']
-    VanDialog: typeof import('vant/es')['Dialog']
-    VanDropdownItem: typeof import('vant/es')['DropdownItem']
-    VanDropdownMenu: typeof import('vant/es')['DropdownMenu']
     VanField: typeof import('vant/es')['Field']
     VanLoading: typeof import('vant/es')['Loading']
-    VanSwitch: typeof import('vant/es')['Switch']
   }
 }
