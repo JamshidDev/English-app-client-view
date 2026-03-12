@@ -27,7 +27,7 @@ jobs:
         run: |
           cat > .env.production << EOF
           VITE_APP_TITLE=English Learning App
-          VITE_API_BASE_URL=https://jamacoder.uz/api
+          VITE_API_BASE_URL=https://bot.jamacoder.uz/api
           VITE_TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
           VITE_DEFAULT_LANGUAGE=uz
           VITE_DEFAULT_THEME=light
@@ -86,7 +86,7 @@ jobs:
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
             -d parse_mode=HTML \
-            -d text="✅ <b>Deploy muvaffaqiyatli!</b>%0A%0A📦 <b>Repo:</b> ${{ github.repository }}%0A🔀 <b>Branch:</b> ${{ github.ref_name }}%0A👤 <b>Author:</b> ${{ github.actor }}%0A💬 <b>Commit:</b> ${{ steps.commit.outputs.msg }}%0A%0A🌐 <a href='https://jamacoder.uz'>jamacoder.uz</a>"
+            -d text="✅ <b>Deploy muvaffaqiyatli!</b>%0A%0A📦 <b>Repo:</b> ${{ github.repository }}%0A🔀 <b>Branch:</b> ${{ github.ref_name }}%0A👤 <b>Author:</b> ${{ github.actor }}%0A💬 <b>Commit:</b> ${{ steps.commit.outputs.msg }}%0A%0A🌐 <a href='https://bot.jamacoder.uz'>bot.jamacoder.uz</a>"
 
       - name: Notify Telegram (Build Failed)
         if: ${{ needs.build.result == 'failure' }}
