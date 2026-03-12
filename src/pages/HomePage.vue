@@ -17,7 +17,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-[#0a0a0a]">
+  <div class="bg-gray-50 dark:bg-[#0a0a0a]">
     <!-- Header Wrapper -->
     <div
       class="sticky z-50 transition-all duration-300"

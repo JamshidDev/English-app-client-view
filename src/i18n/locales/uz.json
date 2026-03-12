@@ -40,7 +40,8 @@
   "nav": {
     "home": "Asosiy",
     "vocabulary": "Vocabulary",
-    "profile": "Profil"
+    "profile": "Profil",
+    "board": "Board"
   },
   "modules": {
     "vocabulary": "Vocabulary",
@@ -166,7 +167,10 @@
     "version": "Versiya",
     "joined": "Ro'yxatdan o'tgan",
     "logout": "Chiqish",
-    "edit_profile": "Profilni tahrirlash"
+    "logout_confirm": "Haqiqatan ham chiqmoqchimisiz?",
+    "edit_profile": "Profilni tahrirlash",
+    "share": "Ulashish",
+    "rate": "Baholash"
   },
   "achievements": {
     "first_word": "Birinchi so'z",

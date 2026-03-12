@@ -24,11 +24,20 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/board',
+    name: 'Board',
+    component: () => import('@/pages/BoardPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/vocabulary',
     name: 'Vocabulary',
     component: () => import('@/pages/VocabularyPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -36,7 +45,8 @@ const routes: RouteRecordRaw[] = [
     name: 'CategorySettings',
     component: () => import('@/pages/CategorySettingsPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -44,7 +54,8 @@ const routes: RouteRecordRaw[] = [
     name: 'WordSet',
     component: () => import('@/pages/WordSetPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -52,7 +63,8 @@ const routes: RouteRecordRaw[] = [
     name: 'Learn',
     component: () => import('@/pages/LearnPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -60,7 +72,8 @@ const routes: RouteRecordRaw[] = [
     name: 'Test',
     component: () => import('@/pages/TestPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -68,7 +81,8 @@ const routes: RouteRecordRaw[] = [
     name: 'Writing',
     component: () => import('@/pages/WritingPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -76,7 +90,8 @@ const routes: RouteRecordRaw[] = [
     name: 'Pronunciation',
     component: () => import('@/pages/PronunciationPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -92,7 +107,8 @@ const routes: RouteRecordRaw[] = [
     name: 'ComingSoon',
     component: () => import('@/pages/ComingSoonPage.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      hideNavbar: true
     }
   },
   {
@@ -103,7 +119,11 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(_to, _from, savedPosition) {
+    if (savedPosition) return savedPosition
+    return { top: 0 }
+  }
 })
 
 router.beforeEach(async (to, _from, next) => {
