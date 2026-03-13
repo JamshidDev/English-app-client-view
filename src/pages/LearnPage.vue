@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVocabStore } from '@/stores/useVocabStore'
@@ -42,10 +42,6 @@ const showSettings = ref(false)
 const openSettings = () => {
   hapticImpact('light')
   showSettings.value = true
-}
-
-const closeSettings = () => {
-  showSettings.value = false
 }
 
 const showReportError = ref(false)
