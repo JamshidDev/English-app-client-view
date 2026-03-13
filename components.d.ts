@@ -10,6 +10,7 @@ declare module 'vue' {
     AppHeader: typeof import('./src/components/common/AppHeader.vue')['default']
     AppLoader: typeof import('./src/components/common/AppLoader.vue')['default']
     AppNavbar: typeof import('./src/components/common/AppNavbar.vue')['default']
+    BoardHeader: typeof import('./src/components/board/BoardHeader.vue')['default']
     CategoryPinList: typeof import('./src/components/vocabulary/CategoryPinList.vue')['default']
     CongratsStep: typeof import('./src/components/register/CongratsStep.vue')['default']
     GoalStep: typeof import('./src/components/register/GoalStep.vue')['default']
@@ -23,8 +24,10 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ThemeSwitcher: typeof import('./src/components/common/ThemeSwitcher.vue')['default']
+    VanActionSheet: typeof import('vant/es')['ActionSheet']
     VanButton: typeof import('vant/es')['Button']
     VanField: typeof import('vant/es')['Field']
     VanLoading: typeof import('vant/es')['Loading']
+    VanSwitch: typeof import('vant/es')['Switch']
   }
 }

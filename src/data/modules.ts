@@ -7,9 +7,9 @@ export const modules: AppModule[] = [
     descriptionKey: 'modules.vocabulary_desc',
     route: '/vocabulary',
     active: true,
-    gradient: 'from-blue-500 to-indigo-600',
-    iconBg: 'bg-blue-400/30',
-    color: '#3b82f6'
+    color: '#58cc02',
+    shadow: '#3ea000',
+    emoji: 'book'
   },
   {
     id: 'grammar',
@@ -17,9 +17,9 @@ export const modules: AppModule[] = [
     descriptionKey: 'modules.grammar_desc',
     route: '/coming-soon',
     active: true,
-    gradient: 'from-purple-500 to-purple-600',
-    iconBg: 'bg-purple-400/30',
-    color: '#a855f7'
+    color: '#ce82ff',
+    shadow: '#9b50e0',
+    emoji: 'pencil'
   },
   {
     id: 'listening',
@@ -27,9 +27,9 @@ export const modules: AppModule[] = [
     descriptionKey: 'modules.listening_desc',
     route: '/coming-soon',
     active: true,
-    gradient: 'from-emerald-500 to-teal-600',
-    iconBg: 'bg-emerald-400/30',
-    color: '#10b981'
+    color: '#1cb0f6',
+    shadow: '#1290d0',
+    emoji: 'headphones'
   },
   {
     id: 'speaking',
@@ -37,8 +37,8 @@ export const modules: AppModule[] = [
     descriptionKey: 'modules.speaking_desc',
     route: '/coming-soon',
     active: true,
-    gradient: 'from-orange-500 to-red-500',
-    iconBg: 'bg-orange-400/30',
-    color: '#f97316'
+    color: '#ff9600',
+    shadow: '#d07a00',
+    emoji: 'mic'
   }
 ]

@@ -34,19 +34,23 @@ const handleToggle = (categoryId: string) => {
       v-for="category in categories"
       :key="category.id"
       @click="handleToggle(category.id)"
-      class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 cursor-pointer transition-all active:scale-[0.98]"
-      :class="{ 'border-primary-500 dark:border-primary-500': isSelected(category.id) }"
+      class="flex items-center justify-between px-3 py-2.5 bg-white dark:bg-[#1a2730] rounded-xl border-2 cursor-pointer transition-all active:scale-[0.98]"
+      :class="isSelected(category.id)
+        ? 'border-[#58cc02] bg-[#58cc02]/5 dark:bg-[#58cc02]/10'
+        : 'border-gray-100 dark:border-[#314158]/50'"
     >
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5">
         <div
-          class="w-10 h-10 rounded-lg flex items-center justify-center"
+          class="w-8 h-8 rounded-lg flex items-center justify-center"
           :class="isSelected(category.id)
-            ? 'bg-primary-100 dark:bg-primary-900/30'
-            : 'bg-gray-100 dark:bg-gray-700'"
+            ? 'bg-[#58cc02]/15 dark:bg-[#58cc02]/20'
+            : 'bg-gray-100 dark:bg-[#243642]'"
         >
-          <span class="text-lg">📚</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" :class="isSelected(category.id) ? 'text-[#58cc02]' : 'text-gray-400 dark:text-gray-500'" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+          </svg>
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">
+        <span class="font-bold text-sm" :class="isSelected(category.id) ? 'text-[#58cc02]' : 'text-gray-900 dark:text-white'">
           {{ getName(category.name) }}
         </span>
       </div>
@@ -54,18 +58,19 @@ const handleToggle = (categoryId: string) => {
       <div
         class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all"
         :class="isSelected(category.id)
-          ? 'bg-primary-500 border-primary-500'
-          : 'border-gray-300 dark:border-gray-600'"
+          ? 'bg-[#58cc02] border-[#58cc02]'
+          : 'border-gray-300 dark:border-[#314158]'"
       >
         <svg
           v-if="isSelected(category.id)"
           xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4 text-white"
+          class="w-3.5 h-3.5 text-white"
           fill="none"
           viewBox="0 0 24 24"
+          stroke-width="3"
           stroke="currentColor"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
     </div>

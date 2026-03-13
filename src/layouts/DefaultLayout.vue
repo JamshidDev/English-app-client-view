@@ -12,8 +12,8 @@ const showNavbar = computed(() => !route.meta.hideNavbar)
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-[#0a0a0a]">
-    <main class="flex-1" :class="showNavbar ? 'pb-20' : ''">
+  <div class="min-h-screen flex flex-col bg-white dark:bg-[#131f24]">
+    <main class="flex-1" :class="showNavbar ? 'pb-16' : ''">
       <slot />
     </main>
 

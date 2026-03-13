@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRegister } from '@/composables/useRegister'
 import PhoneStep from '@/components/register/PhoneStep.vue'
 import NameStep from '@/components/register/NameStep.vue'
@@ -11,7 +11,6 @@ const {
   formData,
   isSubmitting,
   registerError,
-  maxSteps,
   nextStep,
   prevStep,
   completeRegistration
@@ -23,31 +22,10 @@ watch(currentStep, (newVal, oldVal) => {
   transitionName.value = newVal > oldVal ? 'slide-left' : 'slide-right'
 })
 
-const progressDots = computed(() => {
-  return Array.from({ length: maxSteps }, (_, i) => ({
-    index: i + 1,
-    isActive: i + 1 === currentStep.value,
-    isCompleted: i + 1 < currentStep.value
-  }))
-})
 </script>
 
 <template>
-  <div class="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
-    <!-- Progress Dots -->
-    <div class="flex justify-center gap-2 pt-6 pb-4">
-      <div
-        v-for="dot in progressDots"
-        :key="dot.index"
-        class="progress-dot"
-        :class="{
-          'active': dot.isActive,
-          'completed': dot.isCompleted,
-          'pending': !dot.isActive && !dot.isCompleted
-        }"
-      />
-    </div>
-
+  <div class="flex flex-col h-screen bg-white dark:bg-[#131f24]">
     <!-- Step Content -->
     <div class="flex-1 overflow-hidden relative">
       <!-- Steps 1-3 with transition -->
@@ -92,22 +70,6 @@ const progressDots = computed(() => {
 </template>
 
 <style scoped>
-.progress-dot {
-  @apply w-2.5 h-2.5 rounded-full transition-all duration-300;
-}
-
-.progress-dot.active {
-  @apply bg-primary-500 w-6;
-}
-
-.progress-dot.completed {
-  @apply bg-primary-500;
-}
-
-.progress-dot.pending {
-  @apply bg-gray-300 dark:bg-gray-600;
-}
-
 .slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,
