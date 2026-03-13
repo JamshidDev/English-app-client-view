@@ -74,7 +74,7 @@
     "word_set": "to'plam",
     "words_count": "ta so'z",
     "progress": "O'zlashtirish",
-    "learned": "o'rganildi",
+    "learned": "o'rganilgan",
     "actions": {
       "learn": "Yodlash",
       "test": "Test",
@@ -92,8 +92,16 @@
       "complete_title": "Tabriklaymiz!",
       "complete_message": "Siz barcha so'zlarni ko'rib chiqdingiz!",
       "words_learned": "O'rganilgan so'zlar",
-      "restart": "Qaytadan boshlash",
-      "go_back": "Orqaga qaytish"
+      "correct_answers": "To'g'ri",
+      "incorrect_answers": "Noto'g'ri",
+      "restart": "Qayta boshlash",
+      "next_exercise": "Keyingi mashq",
+      "go_home": "Asosiy oynaga qaytish",
+      "go_back": "Orqaga qaytish",
+      "exit_confirm": "Haqiqatan ham chiqmoqchimisiz?",
+      "exit_message": "Jarayon saqlanmaydi",
+      "exit_yes": "Ha, chiqish",
+      "exit_no": "Yo'q, davom etish"
     },
     "test": {
       "title": "Test",
