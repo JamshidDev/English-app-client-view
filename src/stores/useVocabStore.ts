@@ -28,7 +28,7 @@ export const useVocabStore = defineStore('vocab', () => {
     isLoadingCategories.value = true
     try {
       const clientRes = await clientCategoriesApi.getMy({ page: 1, pageSize: 20 })
-      const clientData = Array.isArray(clientRes.data) ? clientRes.data : clientRes.data?.data || []
+      const clientData = Array.isArray(clientRes.data) ? clientRes.data : (clientRes.data as any)?.data || []
       const clientCategories = clientData.map((item: any) => item.category).filter(Boolean)
       if (clientCategories.length > 0) {
         categories.value = clientCategories
