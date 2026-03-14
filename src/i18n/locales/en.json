@@ -77,9 +77,15 @@
     "learned": "learned",
     "actions": {
       "learn": "Learn",
+      "learn_desc": "Study and memorize words",
       "test": "Test",
+      "test_desc": "Test your knowledge",
       "writing": "Writing",
-      "pronunciation": "Pronunciation"
+      "writing_desc": "Practice writing words",
+      "pronunciation": "Pronunciation",
+      "step": "Step",
+      "guide": "First learn the words, then practice writing, and finally test your knowledge",
+      "score": "Score"
     },
     "learn": {
       "title": "Learn Words",
@@ -112,6 +118,7 @@
     "writing": {
       "title": "Writing",
       "type_word": "Type the word in English",
+      "find_word": "Find the word in English",
       "check": "Check",
       "correct": "Correct!",
       "incorrect": "Incorrect! Correct answer:",

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVocabStore } from '@/stores/useVocabStore'
@@ -21,6 +21,33 @@ const currentIndex = ref(0)
 const isComplete = ref(false)
 const slideDirection = ref<'left' | 'right'>('left')
 const isAnimating = ref(false)
+
+// Progress scroll
+const progressContainer = ref<HTMLElement | null>(null)
+
+const scrollToActiveBox = () => {
+  nextTick(() => {
+    if (!progressContainer.value) return
+    const activeBox = progressContainer.value.children[currentIndex.value] as HTMLElement
+    if (!activeBox) return
+    const container = progressContainer.value
+    const scrollLeft = activeBox.offsetLeft - container.offsetWidth / 2 + activeBox.offsetWidth / 2
+    container.scrollTo({ left: scrollLeft, behavior: 'smooth' })
+  })
+}
+
+watch(currentIndex, () => {
+  scrollToActiveBox()
+})
+
+const goToQuestion = (targetIndex: number) => {
+  if (targetIndex === currentIndex.value) return
+  if (isAnimating.value) return
+  slideDirection.value = targetIndex > currentIndex.value ? 'left' : 'right'
+  isAnimating.value = true
+  currentIndex.value = targetIndex
+  setTimeout(() => { isAnimating.value = false }, 250)
+}
 
 // Touch swipe
 const touchStartX = ref(0)
@@ -105,10 +132,6 @@ const currentWord = computed(() => {
   return vocabStore.words[currentIndex.value]
 })
 
-const progress = computed(() => {
-  if (vocabStore.words.length === 0) return 0
-  return ((currentIndex.value + 1) / vocabStore.words.length) * 100
-})
 
 const getTranslation = (wordTranslate: { uz: string; ru: string }) => {
   if (currentLanguage.value === 'ru') return wordTranslate.ru
@@ -292,17 +315,29 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Progress Bar -->
-      <div class="flex items-center gap-3">
-        <div class="flex-1 h-3 bg-gray-100 dark:bg-[#243642] rounded-full overflow-hidden">
-          <div
-            class="h-full bg-[#58cc02] rounded-full transition-all duration-300"
-            :style="{ width: `${progress}%` }"
-          />
+      <!-- Progress Boxes -->
+      <div
+        v-if="vocabStore.words.length > 0"
+        ref="progressContainer"
+        class="flex items-center gap-1.5 overflow-x-auto no-scrollbar px-2 py-1"
+        style="overflow-y: hidden;"
+      >
+        <div
+          v-for="i in vocabStore.words.length"
+          :key="i"
+          class="progress-box w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-extrabold flex-shrink-0 cursor-pointer"
+          :class="[
+            i - 1 === currentIndex ? 'active-progress' : '',
+            i - 1 < currentIndex
+              ? 'bg-[#58cc02] text-white'
+              : i - 1 === currentIndex
+                ? 'bg-white dark:bg-[#1a2730] text-[#58cc02]'
+                : 'bg-gray-100 dark:bg-[#243642] text-gray-400 dark:text-gray-500'
+          ]"
+          @click="i - 1 <= currentIndex && goToQuestion(i - 1)"
+        >
+          {{ i }}
         </div>
-        <span class="text-xs font-extrabold text-gray-500 dark:text-gray-400 tabular-nums">
-          {{ currentIndex + 1 }}/{{ vocabStore.words.length }}
-        </span>
       </div>
     </div>
 
@@ -734,5 +769,19 @@ onUnmounted(() => {
   30% { transform: translateY(-4px) scale(1.08); }
   60% { transform: translateY(-4px) scale(0.95); }
   100% { transform: translateY(-4px) scale(1); }
+}
+
+/* Progress box animation */
+.progress-box {
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: inset 0 0 0 0 #58cc02;
+}
+
+.progress-box.active-progress {
+  box-shadow: inset 0 0 0 2px #58cc02;
+  transform: scale(1.1);
 }
 </style>

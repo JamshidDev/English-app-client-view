@@ -37,6 +37,12 @@ export const collectionsApi = {
       params: { categoryId, ...params }
     })
     return response.data
+  },
+
+  // Bitta collection
+  getById: async (collectionId: string): Promise<ApiResponse<Collection>> => {
+    const response = await api.get<ApiResponse<Collection>>(`/collections/${collectionId}`)
+    return response.data
   }
 }
 

@@ -84,9 +84,15 @@
     "learned": "o'rganilgan",
     "actions": {
       "learn": "Yodlash",
+      "learn_desc": "So'zlarni o'rganing va yodlang",
       "test": "Test",
+      "test_desc": "Bilimingizni sinab ko'ring",
       "writing": "Writing",
-      "pronunciation": "Talaffuz"
+      "writing_desc": "So'zlarni yozib mashq qiling",
+      "pronunciation": "Talaffuz",
+      "step": "Qadam",
+      "guide": "Avval so'zlarni yodlang, keyin yozib mashq qiling va oxirida test yechib bilimingizni tekshiring",
+      "score": "Ball"
     },
     "learn": {
       "title": "So'zni yodlash",
@@ -123,6 +129,7 @@
     "writing": {
       "title": "Writing",
       "type_word": "So'zni ingliz tilida yozing",
+      "find_word": "So'zni ingliz tilida toping",
       "check": "Tekshirish",
       "correct": "To'g'ri!",
       "incorrect": "Noto'g'ri! To'g'ri javob:",

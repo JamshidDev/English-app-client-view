@@ -70,6 +70,20 @@ export const useVocabStore = defineStore('vocab', () => {
     }
   }
 
+  // Bitta collection yuklash (reload uchun)
+  const fetchCollection = async (collectionId: string) => {
+    try {
+      const res = await collectionsApi.getById(collectionId)
+      const col = res.data
+      const exists = collections.value.find(c => c.id === collectionId)
+      if (!exists && col) {
+        collections.value.push(col)
+      }
+    } catch (error) {
+      console.error('Failed to fetch collection:', error)
+    }
+  }
+
   // Collection bo'yicha so'zlarni yuklash
   const fetchWords = async (collectionId: string) => {
     isLoadingWords.value = true
@@ -159,6 +173,7 @@ export const useVocabStore = defineStore('vocab', () => {
     initVocab,
     resetCollections,
     fetchCategories,
+    fetchCollection,
     fetchCollections,
     fetchWords,
     selectCategory,
