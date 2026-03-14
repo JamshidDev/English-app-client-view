@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Nunito font — lokal yuklangan */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('@/assets/fonts/Nunito-Variable.woff2') format('woff2');
+}
+
 :root {
   --van-primary-color: #3b82f6;
   --van-success-color: #22c55e;
@@ -10,28 +19,28 @@
 }
 
 html.dark {
-  --van-background: #1f2937;
-  --van-background-2: #111827;
-  --van-background-3: #374151;
+  --van-background: #131f24;
+  --van-background-2: #131f24;
+  --van-background-3: #1a2730;
   --van-text-color: #f9fafb;
   --van-text-color-2: #d1d5db;
   --van-text-color-3: #9ca3af;
-  --van-border-color: #374151;
-  --van-active-color: #374151;
+  --van-border-color: #314158;
+  --van-active-color: #1a2730;
 
   /* Button dark mode */
-  --van-button-default-background: #374151;
-  --van-button-default-border-color: #4b5563;
+  --van-button-default-background: #1a2730;
+  --van-button-default-border-color: #314158;
   --van-button-default-color: #f9fafb;
   --van-button-plain-background: transparent;
 
   /* Dialog dark mode */
-  --van-dialog-background: #1f2937;
+  --van-dialog-background: #1a2730;
   --van-dialog-header-color: #f9fafb;
   --van-dialog-message-color: #d1d5db;
 
   /* Cell dark mode */
-  --van-cell-background: #1f2937;
+  --van-cell-background: #1a2730;
   --van-cell-text-color: #f9fafb;
   --van-cell-label-color: #9ca3af;
   --van-cell-value-color: #d1d5db;
@@ -40,13 +49,13 @@ html.dark {
   --van-field-label-color: #d1d5db;
   --van-field-input-text-color: #f9fafb;
   --van-field-placeholder-text-color: #6b7280;
-  --van-field-background: #374151;
+  --van-field-background: #1a2730;
 
   /* Switch dark mode */
-  --van-switch-background: #4b5563;
+  --van-switch-background: #314158;
 
   /* Dropdown dark mode */
-  --van-dropdown-menu-background: #1f2937;
+  --van-dropdown-menu-background: #1a2730;
   --van-dropdown-menu-title-text-color: #f9fafb;
 }
 
@@ -54,6 +63,7 @@ html.dark {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif !important;
   -webkit-tap-highlight-color: transparent !important;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -122,7 +132,7 @@ a:focus-visible {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
@@ -137,7 +147,11 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   overscroll-behavior-y: none;
-  @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  @apply bg-white text-gray-900 dark:text-gray-100;
+}
+
+html.dark #app {
+  background-color: #131f24;
 }
 
 /* Telegram Mini App styles */
@@ -202,6 +216,25 @@ body {
   transform: rotateY(180deg);
 }
 
+/* Page transition — fade + slide */
+.page-enter-active {
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.page-leave-active {
+  transition: opacity 0.1s ease-in, transform 0.1s ease-in;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
 /* Fade transition */
 .fade-enter-active,
 .fade-leave-active {
@@ -241,6 +274,22 @@ body {
   opacity: 0;
 }
 
+/* Collection card fade-in */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in-up 0.3s ease-out both;
+}
+
 /* Confetti animation */
 @keyframes confetti-fall {
   0% {
@@ -276,14 +325,14 @@ body {
 
 /* Vant Button Dark Mode Overrides */
 html.dark .van-button--default {
-  background-color: #374151 !important;
-  border-color: #4b5563 !important;
+  background-color: #1a2730 !important;
+  border-color: #314158 !important;
   color: #f9fafb !important;
 }
 
 html.dark .van-button--default.van-button--plain {
   background-color: transparent !important;
-  border-color: #4b5563 !important;
+  border-color: #314158 !important;
   color: #d1d5db !important;
 }
 
@@ -301,7 +350,7 @@ html.dark .van-button--danger.van-button--plain {
 
 /* Vant Dialog Dark Mode */
 html.dark .van-dialog {
-  background-color: #1f2937 !important;
+  background-color: #1a2730 !important;
 }
 
 html.dark .van-dialog__header {
@@ -334,7 +383,7 @@ html.dark .van-cell__value {
 }
 
 html.dark .van-cell::after {
-  border-color: #374151 !important;
+  border-color: #314158 !important;
 }
 
 /* Vant Dropdown Dark Mode */
@@ -347,7 +396,7 @@ html.dark .van-dropdown-menu__title {
 }
 
 html.dark .van-dropdown-item__content {
-  background-color: #1f2937 !important;
+  background-color: #1a2730 !important;
 }
 
 html.dark .van-dropdown-item__option {
@@ -356,21 +405,21 @@ html.dark .van-dropdown-item__option {
 
 /* Vant Action Sheet Dark Mode */
 html.dark .van-action-sheet {
-  background-color: #1f2937 !important;
+  background-color: #1a2730 !important;
 }
 
 html.dark .van-action-sheet__item {
-  background-color: #1f2937 !important;
+  background-color: #1a2730 !important;
   color: #f9fafb !important;
 }
 
 html.dark .van-action-sheet__cancel {
-  background-color: #111827 !important;
+  background-color: #131f24 !important;
   color: #9ca3af !important;
 }
 
 html.dark .van-action-sheet__gap {
-  background-color: #111827 !important;
+  background-color: #131f24 !important;
 }
 
 /* Vant Overlay Dark Mode */

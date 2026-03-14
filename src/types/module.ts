@@ -4,7 +4,7 @@ export interface AppModule {
   descriptionKey: string
   route: string
   active: boolean
-  gradient: string
-  iconBg: string
   color: string
+  shadow: string
+  emoji: string
 }

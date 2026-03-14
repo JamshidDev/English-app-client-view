@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
+import HomePage from '@/pages/HomePage.vue'
+import BoardPage from '@/pages/BoardPage.vue'
+import ProfilePage from '@/pages/ProfilePage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -18,7 +21,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/home',
     name: 'Home',
-    component: () => import('@/pages/HomePage.vue'),
+    component: HomePage,
     meta: {
       requiresAuth: true
     }
@@ -26,7 +29,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/board',
     name: 'Board',
-    component: () => import('@/pages/BoardPage.vue'),
+    component: BoardPage,
     meta: {
       requiresAuth: true
     }
@@ -97,7 +100,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('@/pages/ProfilePage.vue'),
+    component: ProfilePage,
     meta: {
       requiresAuth: true
     }
@@ -130,17 +133,10 @@ router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore()
 
   if (!authStore.isAuthChecked) {
-    // Telegram dan telegramId olish
-    const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id?.toString()
+    // Telegram dan telegramId olish, yo'q bo'lsa demo_user
+    const telegramId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id?.toString() || 'demo_user'
 
-    if (telegramId) {
-      // API dan auth/check — registered bo'lsa token oladi
-      await authStore.checkAuth(telegramId)
-    } else {
-      // Telegram yo'q (browser test) — localStorage dan tekshirish
-      authStore.initAuth()
-      authStore.isAuthChecked = true
-    }
+    await authStore.checkAuth(telegramId)
   }
 
   const requiresAuth = to.meta.requiresAuth !== false

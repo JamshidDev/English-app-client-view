@@ -46,20 +46,47 @@ export const useAuthStore = defineStore('auth', () => {
       return false
     } catch (error) {
       console.error('Auth check failed:', error)
-      initAuth()
-      return isRegistered.value
+
+      // Check fail bo'lganda login bilan urinib ko'ramiz
+      try {
+        const loginResponse = await authApi.login(telegramId)
+
+        user.value = loginResponse.data.client
+        isRegistered.value = true
+        localStorage.setItem('token', loginResponse.data.accessToken)
+        localStorage.setItem('user', JSON.stringify(loginResponse.data.client))
+        return true
+      } catch {
+        // Login ham fail — localStorage dan tekshiramiz
+        initAuth()
+        return isRegistered.value
+      }
     } finally {
       isAuthChecked.value = true
     }
   }
 
   const register = async (payload: RegisterPayload): Promise<void> => {
-    const response = await authApi.register(payload)
+    try {
+      const response = await authApi.register(payload)
 
-    user.value = response.data.client
-    isRegistered.value = true
-    localStorage.setItem('token', response.data.accessToken)
-    localStorage.setItem('user', JSON.stringify(response.data.client))
+      user.value = response.data.client
+      isRegistered.value = true
+      localStorage.setItem('token', response.data.accessToken)
+      localStorage.setItem('user', JSON.stringify(response.data.client))
+    } catch (error: any) {
+      // 409 — user allaqachon mavjud, login qilamiz
+      if (error?.response?.status === 409) {
+        const loginResponse = await authApi.login(payload.telegramId)
+
+        user.value = loginResponse.data.client
+        isRegistered.value = true
+        localStorage.setItem('token', loginResponse.data.accessToken)
+        localStorage.setItem('user', JSON.stringify(loginResponse.data.client))
+        return
+      }
+      throw error
+    }
   }
 
   const updateStats = (stats: Partial<UserStats>) => {

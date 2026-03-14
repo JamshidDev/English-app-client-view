@@ -32,29 +32,18 @@ onMounted(() => {
   <template v-else>
     <AuthLayout v-if="route.meta.layout === 'auth'">
       <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
+        <transition name="page" mode="out-in">
+          <component :is="Component" :key="route.path" />
         </transition>
       </router-view>
     </AuthLayout>
     <DefaultLayout v-else>
       <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
+        <transition name="page" mode="out-in">
+          <component :is="Component" :key="route.path" />
         </transition>
       </router-view>
     </DefaultLayout>
   </template>
 </template>
 
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.15s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

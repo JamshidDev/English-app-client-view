@@ -93,7 +93,11 @@
       "complete_message": "You have reviewed all words!",
       "words_learned": "Words learned",
       "restart": "Restart",
-      "go_back": "Go back"
+      "go_back": "Go back",
+      "exit_confirm": "Do you want to exit?",
+      "exit_message": "Your progress won't be saved",
+      "exit_yes": "Yes, exit",
+      "exit_no": "No, continue"
     },
     "test": {
       "title": "Test",

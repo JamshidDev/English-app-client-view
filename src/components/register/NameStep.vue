@@ -61,36 +61,27 @@ const handleNext = () => {
   hapticImpact('medium')
   emit('next')
 }
-
-const handleBack = () => {
-  hapticImpact('light')
-  emit('back')
-}
 </script>
 
 <template>
-  <div class="flex flex-col h-full px-6 py-8 relative overflow-hidden">
-    <!-- Background Icons -->
-    <div class="absolute -right-10 -bottom-10 opacity-5 dark:opacity-[0.03] pointer-events-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-64 h-64 text-primary-500" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
-      </svg>
-    </div>
-    <div class="absolute -left-8 -top-8 opacity-5 dark:opacity-[0.03] pointer-events-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-48 h-48 text-primary-500" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-      </svg>
-    </div>
+  <div class="flex flex-col h-full px-5 py-6">
+    <div class="flex-1">
+      <!-- Icon + Title -->
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 mx-auto mb-4 bg-[#1cb0f6] rounded-2xl flex items-center justify-center">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-extrabold text-gray-900 dark:text-white">
+          {{ t('register.name_title') }}
+        </h2>
+      </div>
 
-    <div class="flex-1 relative z-10">
-      <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-6">
-        {{ t('register.name_title') }}
-      </h2>
-
-      <div class="space-y-5">
+      <div class="space-y-4">
         <!-- First Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
             {{ t('register.first_name') }}
           </label>
           <van-field
@@ -105,7 +96,7 @@ const handleBack = () => {
 
         <!-- Last Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
             {{ t('register.last_name') }}
           </label>
           <van-field
@@ -120,35 +111,28 @@ const handleBack = () => {
       </div>
     </div>
 
-    <div class="mt-auto flex gap-3 relative z-10">
-      <van-button
-        plain
-        round
-        size="large"
-        class="flex-1"
-        @click="handleBack"
-      >
-        {{ t('common.back') }}
-      </van-button>
-
-      <van-button
-        type="primary"
-        round
-        size="large"
-        :disabled="!isValid"
-        class="flex-1"
-        @click="handleNext"
-      >
-        {{ t('common.next') }}
-      </van-button>
+    <!-- 3D Duolingo Button -->
+    <div class="mt-auto pt-4">
+      <div class="relative" @click="handleNext">
+        <div class="absolute inset-x-0 bottom-0 h-[calc(100%-3px)] rounded-2xl" :class="isValid ? 'bg-[#3ea000]' : 'bg-gray-200 dark:bg-[#243642]'" />
+        <button
+          :disabled="!isValid"
+          class="relative w-full rounded-2xl py-4 -translate-y-[5px] active:translate-y-0 transition-transform font-extrabold text-base"
+          :class="[
+            isValid ? 'bg-[#58cc02] text-white dark:shadow-[0_6px_20px_rgba(0,0,0,0.4)]' : 'bg-gray-100 dark:bg-[#1a2730] text-gray-300 dark:text-white/20'
+          ]"
+        >
+          {{ t('common.next') }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 :deep(.custom-input.van-field) {
-  @apply rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800;
-  padding: 12px 16px;
+  @apply rounded-2xl border-2 border-gray-200 dark:border-[#314158] bg-white dark:bg-[#1a2730];
+  padding: 14px 16px;
 }
 
 :deep(.custom-input .van-field__label) {
@@ -156,14 +140,14 @@ const handleBack = () => {
 }
 
 :deep(.custom-input .van-field__control) {
-  @apply text-gray-900 dark:text-white text-base;
+  @apply text-gray-900 dark:text-white text-base font-semibold;
 }
 
 :deep(.custom-input .van-field__control::placeholder) {
-  @apply text-gray-400 dark:text-gray-500;
+  @apply text-gray-300 dark:text-white/20 font-normal;
 }
 
 :deep(.van-field__error-message) {
-  @apply text-red-500 text-xs mt-1;
+  @apply text-red-500 text-xs mt-1 font-semibold;
 }
 </style>

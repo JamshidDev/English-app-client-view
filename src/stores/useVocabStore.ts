@@ -28,11 +28,14 @@ export const useVocabStore = defineStore('vocab', () => {
     isLoadingCategories.value = true
     try {
       const clientRes = await clientCategoriesApi.getMy({ page: 1, pageSize: 20 })
-      if (clientRes.data.length > 0) {
-        categories.value = clientRes.data.map(item => item.category)
+      const clientData = Array.isArray(clientRes.data) ? clientRes.data : clientRes.data?.data || []
+      const clientCategories = clientData.map((item: any) => item.category).filter(Boolean)
+      if (clientCategories.length > 0) {
+        categories.value = clientCategories
       } else {
         const allRes = await categoriesApi.getAll({ page: 1, pageSize: 20 })
-        categories.value = allRes.data.data
+        const allData = allRes.data?.data || allRes.data || []
+        categories.value = Array.isArray(allData) ? allData : []
       }
 
       if (categories.value.length > 0) {
@@ -46,6 +49,12 @@ export const useVocabStore = defineStore('vocab', () => {
     } finally {
       isLoadingCategories.value = false
     }
+  }
+
+  // Sahifa ochilganda eski datani tozalash
+  const resetCollections = () => {
+    collections.value = []
+    isLoadingCollections.value = true
   }
 
   // Category bo'yicha collectionlarni yuklash
@@ -76,6 +85,7 @@ export const useVocabStore = defineStore('vocab', () => {
 
   const selectCategory = async (categoryId: string) => {
     selectedCategoryId.value = categoryId
+    collections.value = []
     await fetchCollections(categoryId)
   }
 
@@ -147,6 +157,7 @@ export const useVocabStore = defineStore('vocab', () => {
     isLoadingWords,
     collectionProgress,
     initVocab,
+    resetCollections,
     fetchCategories,
     fetchCollections,
     fetchWords,

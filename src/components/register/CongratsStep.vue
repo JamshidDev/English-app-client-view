@@ -18,7 +18,7 @@ const { hapticNotification } = useTelegram()
 const showConfetti = ref(false)
 const confettiItems = ref<Array<{ id: number; left: string; delay: string; color: string }>>([])
 
-const colors = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899']
+const colors = ['#58cc02', '#1cb0f6', '#ff9600', '#ce82ff', '#ff4b4b', '#ffc800']
 
 onMounted(() => {
   hapticNotification('success')
@@ -64,19 +64,23 @@ const handleComplete = () => {
         class="transition-opacity duration-300"
         :class="{ 'opacity-50': props.isSubmitting }"
       >
-        <div class="text-7xl mb-6 animate-bounce">
-          🎉
+        <!-- Trophy Icon -->
+        <div class="relative w-24 h-24 mx-auto mb-6">
+          <div class="absolute inset-x-0 bottom-0 h-[calc(100%-3px)] rounded-3xl bg-[#d07a00]" />
+          <div class="relative w-full h-full bg-[#ff9600] rounded-3xl -translate-y-[4px] flex items-center justify-center dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+            <span class="text-5xl">🏆</span>
+          </div>
         </div>
 
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-3">
           {{ t('register.congrats_title') }}
         </h2>
 
-        <p class="text-lg text-gray-600 dark:text-gray-400 mb-2">
+        <p class="text-base text-gray-500 dark:text-gray-400 font-semibold mb-1">
           {{ t('register.congrats_message') }}
         </p>
 
-        <p class="text-gray-500 dark:text-gray-500">
+        <p class="text-sm text-gray-400 dark:text-gray-500">
           {{ t('register.congrats_subtitle') }}
         </p>
       </div>
@@ -86,37 +90,35 @@ const handleComplete = () => {
       <!-- Error Alert -->
       <div
         v-if="props.error"
-        class="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl"
+        class="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-500/10 border-2 border-red-200 dark:border-red-800 rounded-2xl"
       >
-        <div class="flex-shrink-0 w-10 h-10 bg-red-100 dark:bg-red-900/40 rounded-full flex items-center justify-center">
+        <div class="flex-shrink-0 w-10 h-10 bg-red-100 dark:bg-red-900/40 rounded-xl flex items-center justify-center">
           <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-red-800 dark:text-red-200">Xatolik yuz berdi</p>
+          <p class="text-sm font-bold text-red-800 dark:text-red-200">Xatolik yuz berdi</p>
           <p class="text-xs text-red-600 dark:text-red-300 mt-0.5">{{ props.error }}</p>
         </div>
       </div>
 
-      <van-button
-        type="primary"
-        block
-        round
-        size="large"
-        :loading="props.isSubmitting"
-        loading-text="Yuklanmoqda..."
-        :disabled="props.isSubmitting"
-        class="shine-button"
-        @click="handleComplete"
-      >
-        <span class="flex items-center justify-center">
-          <span class="font-bold uppercase tracking-wide">O'rganishni boshlash</span>
-          <svg class="w-5 h-5 ml-3 arrow-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </span>
-      </van-button>
+      <!-- 3D Duolingo Button -->
+      <div class="relative" @click="handleComplete">
+        <div class="absolute inset-x-0 bottom-0 h-[calc(100%-3px)] rounded-2xl bg-[#3ea000]" />
+        <button
+          :disabled="props.isSubmitting"
+          class="relative w-full rounded-2xl bg-[#58cc02] py-4 -translate-y-[5px] active:translate-y-0 transition-transform text-white font-extrabold text-base flex items-center justify-center gap-2 dark:shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
+        >
+          <span v-if="props.isSubmitting">Yuklanmoqda...</span>
+          <template v-else>
+            <span class="uppercase tracking-wide">O'rganishni boshlash</span>
+            <svg class="w-5 h-5 arrow-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </template>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -135,45 +137,6 @@ const handleComplete = () => {
 
 .confetti {
   animation: confetti-fall 3s ease-in-out forwards;
-}
-
-@keyframes shine {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-:deep(.shine-button) {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%) !important;
-  border: none !important;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
-  transition: all 0.3s ease !important;
-}
-
-:deep(.shine-button:active) {
-  transform: scale(0.98);
-  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3) !important;
-}
-
-:deep(.shine-button)::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  animation: shine 2s infinite;
 }
 
 @keyframes arrow-bounce {

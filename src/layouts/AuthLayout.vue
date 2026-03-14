@@ -6,7 +6,7 @@ const appStore = useAppStore()
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen flex flex-col bg-white dark:bg-gray-900">
     <main class="flex-1 flex flex-col">
       <slot />
     </main>
