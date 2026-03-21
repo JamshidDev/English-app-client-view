@@ -13,7 +13,7 @@ import { activityApi } from '@/api/endpoints/activity'
 const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
-const savedCounts = ref({ words: 0, quizzes: 0 })
+const savedCounts = ref({ words: 0 })
 const totalStars = ref(0)
 const unreadCount = ref(0)
 const activeDaysCount = ref(0)
@@ -33,7 +33,6 @@ onMounted(async () => {
   } catch {}
 })
 
-const streakDays = computed(() => authStore.userStats.streakDays)
 const wordsLearned = computed(() => authStore.userStats.wordsLearned)
 
 // Kundalik maqsad — 10 ta so'z
