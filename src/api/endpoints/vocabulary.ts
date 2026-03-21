@@ -47,11 +47,29 @@ export const collectionsApi = {
 }
 
 export const vocabularyApi = {
-  // Collection bo'yicha so'zlar
+  // Collection bo'yicha so'zlar (learned status bilan)
   getByCollection: async (collectionId: string): Promise<ApiResponse<VocabularyItem[]>> => {
     const response = await api.get<ApiResponse<VocabularyItem[]>>('/vocabulary', {
       params: { collectionId }
     })
+    return response.data
+  },
+
+  // So'zni "bildim" deb belgilash
+  learn: async (wordId: string, collectionId: string): Promise<ApiResponse<any>> => {
+    const response = await api.post<ApiResponse<any>>('/vocabulary/learn', { wordId, collectionId })
+    return response.data
+  },
+
+  // So'zni "bilmayman" deb belgilash
+  unlearn: async (wordId: string, collectionId: string): Promise<ApiResponse<any>> => {
+    const response = await api.post<ApiResponse<any>>('/vocabulary/unlearn', { wordId, collectionId })
+    return response.data
+  },
+
+  // Vocabulary yakunlash va ball olish
+  complete: async (collectionId: string): Promise<ApiResponse<{ learned: number; total: number; percentage: number; score: number }>> => {
+    const response = await api.post<ApiResponse<{ learned: number; total: number; percentage: number; score: number }>>('/vocabulary/complete', { collectionId })
     return response.data
   }
 }

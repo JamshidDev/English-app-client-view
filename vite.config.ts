@@ -19,6 +19,16 @@ export default defineConfig({
   server: {
     host: true,
     port: 3000,
-    allowedHosts: ['localhost', '.ngrok-free.app', '.ngrok.io']
+    allowedHosts: ['localhost', '.ngrok-free.app', '.ngrok.io'],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
+      }
+    }
   }
 })

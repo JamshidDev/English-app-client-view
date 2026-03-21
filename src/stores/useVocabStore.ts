@@ -118,8 +118,17 @@ export const useVocabStore = defineStore('vocab', () => {
     return progress.wordsProgress.filter(wp => wp.learned).length
   }
 
-  const markWordAsLearned = (collectionId: string, wordId: string) => {
+  const markWordAsLearned = async (collectionId: string, wordId: string) => {
     const authStore = useAuthStore()
+
+    // Backend API ga yuborish
+    try {
+      await vocabularyApi.learn(wordId, collectionId)
+    } catch (error) {
+      console.error('Failed to mark word as learned:', error)
+    }
+
+    // Local progress ham yangilash
     let progress = collectionProgress.value.find(p => p.collectionId === collectionId)
 
     if (!progress) {
@@ -152,6 +161,32 @@ export const useVocabStore = defineStore('vocab', () => {
     localStorage.setItem('collectionProgress', JSON.stringify(collectionProgress.value))
   }
 
+  const syncLearnedWords = async (colId: string) => {
+    const progress = getCollectionProgress(colId)
+    if (!progress) return
+
+    const learnedWords = progress.wordsProgress.filter(wp => wp.learned)
+    for (const wp of learnedWords) {
+      try {
+        await vocabularyApi.learn(wp.wordId, colId)
+      } catch {
+        // skip — already learned or error
+      }
+    }
+  }
+
+  const completeVocabulary = async (collectionId: string) => {
+    try {
+      // Avval localStorage'dagi learned so'zlarni backend'ga sync qilish
+      await syncLearnedWords(collectionId)
+      const res = await vocabularyApi.complete(collectionId)
+      return res.data
+    } catch (error) {
+      console.error('Failed to complete vocabulary:', error)
+      return null
+    }
+  }
+
   const resetCollectionProgress = (collectionId: string) => {
     const index = collectionProgress.value.findIndex(p => p.collectionId === collectionId)
     if (index > -1) {
@@ -181,6 +216,7 @@ export const useVocabStore = defineStore('vocab', () => {
     getLearnedWordsCount,
     markWordAsLearned,
     isWordLearned,
+    completeVocabulary,
     resetCollectionProgress
   }
 })

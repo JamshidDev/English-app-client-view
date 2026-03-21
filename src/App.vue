@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import AppLoader from '@/components/common/AppLoader.vue'
+import UIToast from '@/components/common/UIToast.vue'
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -45,5 +46,7 @@ onMounted(() => {
       </router-view>
     </DefaultLayout>
   </template>
+
+  <UIToast />
 </template>
 

@@ -37,7 +37,7 @@ const saveCategories = async () => {
   if (isSaving.value) return
   isSaving.value = true
   try {
-    const categoryIds = Array.from(selectedIds.value)
+    const categoryIds = Array.from(selectedIds.value).filter(Boolean)
     await clientCategoriesApi.save(categoryIds)
     hapticImpact('medium')
     router.back()
@@ -61,7 +61,7 @@ onMounted(async () => {
 
     allCategories.value = allRes.data.data
     const myData = Array.isArray(myRes.data) ? myRes.data : (myRes.data as any)?.data || []
-    const myIds = myData.map((item: any) => item.categoryId)
+    const myIds = myData.map((item: any) => item.categoryId).filter(Boolean)
     selectedIds.value = new Set(myIds)
   } catch (error) {
     console.error('Failed to fetch categories:', error)

@@ -3,6 +3,7 @@ export interface User {
   firstName: string
   lastName: string | null
   telegramId: string
+  avatarUrl?: string | null
 }
 
 export interface RegisterForm {

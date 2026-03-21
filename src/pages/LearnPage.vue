@@ -6,7 +6,11 @@ import { useVocabStore } from '@/stores/useVocabStore'
 import { useTelegram } from '@/composables/useTelegram'
 import { useAudio } from '@/composables/useAudio'
 import { useLanguage } from '@/composables/useLanguage'
-import { showSuccessToast } from 'vant'
+import { savedApi } from '@/api/endpoints/saved'
+import { useUIToast } from '@/composables/useUIToast'
+import { reportsApi } from '@/api/endpoints/reports'
+
+const toast = useUIToast()
 
 const { t } = useI18n()
 const route = useRoute()
@@ -19,6 +23,13 @@ const { currentLanguage } = useLanguage()
 const collectionId = computed(() => route.params.setId as string)
 const currentIndex = ref(0)
 const isComplete = ref(false)
+// Shu sessiyada learned deb belgilangan so'zlar
+const sessionLearned = ref<Set<string>>(new Set())
+
+const isCurrentWordLearned = computed(() => {
+  if (!currentWord.value) return false
+  return sessionLearned.value.has(currentWord.value.id)
+})
 const slideDirection = ref<'left' | 'right'>('left')
 const isAnimating = ref(false)
 
@@ -80,18 +91,38 @@ const showExitConfirm = ref(false)
 const showCelebration = ref(false)
 const showFinishConfirm = ref(false)
 
-const confirmFinish = () => {
+const vocabResult = ref<{ learned: number; total: number; percentage: number; score: number } | null>(null)
+
+const confirmFinish = async () => {
   showFinishConfirm.value = false
   isComplete.value = true
   hapticNotification('success')
+  vocabResult.value = await vocabStore.completeVocabulary(collectionId.value)
 }
 const learnedBtnRef = ref<HTMLElement | null>(null)
-const isSaved = ref(false)
+const savedWordsSet = ref<Set<string>>(new Set())
 const skipLearned = ref(false)
 
-const toggleSaved = () => {
-  isSaved.value = !isSaved.value
+const isCurrentWordSaved = computed(() => {
+  if (!currentWord.value) return false
+  return savedWordsSet.value.has(currentWord.value.id)
+})
+
+const toggleSaved = async () => {
+  if (!currentWord.value) return
   hapticImpact('light')
+  try {
+    const res = await savedApi.toggleWord(currentWord.value.id)
+    if (res.data.saved) {
+      savedWordsSet.value.add(currentWord.value.id)
+      toast.success('Saqlandi')
+    } else {
+      savedWordsSet.value.delete(currentWord.value.id)
+      toast.warning("O'chirildi")
+    }
+  } catch {
+    toast.error('Xatolik yuz berdi')
+  }
 }
 
 const showSettings = ref(false)
@@ -116,15 +147,22 @@ const onSettingsSelect = (action: { value: string }) => {
   }
 }
 
-const submitReport = () => {
-  showReportError.value = false
-  reportText.value = ''
-  hapticNotification('success')
-  showSuccessToast({
-    message: 'Feedback uchun rahmat!\nBiz buni tuzatamiz',
-    duration: 2500,
-    className: 'report-success-toast',
-  })
+const submitReport = async () => {
+  if (!currentWord.value || !reportText.value.trim()) return
+  try {
+    await reportsApi.submit({
+      wordId: currentWord.value.id,
+      collectionId: collectionId.value,
+      page: 'learn',
+      message: reportText.value.trim(),
+    })
+    showReportError.value = false
+    reportText.value = ''
+    hapticNotification('success')
+    toast.success('Xabaringiz yuborildi!')
+  } catch {
+    toast.error('Xatolik yuz berdi')
+  }
 }
 
 const currentWord = computed(() => {
@@ -164,7 +202,7 @@ const playAudio = () => {
   }
 }
 
-const nextWord = () => {
+const nextWord = async () => {
   if (isAnimating.value) return
   hapticImpact('light')
 
@@ -176,6 +214,7 @@ const nextWord = () => {
   } else {
     isComplete.value = true
     hapticNotification('success')
+    vocabResult.value = await vocabStore.completeVocabulary(collectionId.value)
   }
 }
 
@@ -234,7 +273,8 @@ const spawnParticles = () => {
 }
 
 const markLearned = () => {
-  if (currentWord.value) {
+  if (currentWord.value && !sessionLearned.value.has(currentWord.value.id)) {
+    sessionLearned.value.add(currentWord.value.id)
     hapticNotification('success')
     playCelebrateSound()
     spawnParticles()
@@ -259,6 +299,10 @@ onMounted(async () => {
   showBackButton()
   onBackButtonClick(handleBack)
   await vocabStore.fetchWords(collectionId.value)
+  // Backend'dan kelgan saved statuslarni yuklash
+  vocabStore.words.forEach(w => {
+    if ((w as any).saved) savedWordsSet.value.add(w.id)
+  })
 })
 
 onUnmounted(() => {
@@ -283,12 +327,12 @@ onUnmounted(() => {
         <div class="flex items-center gap-1.5">
           <!-- Saved button (3D) -->
           <div class="relative" @click="toggleSaved">
-            <div class="absolute inset-0 bottom-0 h-[calc(100%-1px)] rounded-xl" :class="isSaved ? 'bg-[#e0a800]' : 'bg-gray-200 dark:bg-[#243642]'" />
+            <div class="absolute inset-0 bottom-0 h-[calc(100%-1px)] rounded-xl" :class="isCurrentWordSaved ? 'bg-[#e0a800]' : 'bg-gray-200 dark:bg-[#243642]'" />
             <button
               class="relative w-9 h-9 rounded-xl flex items-center justify-center -translate-y-[2px] active:translate-y-0 transition-all"
-              :class="isSaved ? 'bg-[#ffc800] text-white' : 'bg-white dark:bg-[#1a2730] text-gray-400 dark:text-gray-500 border-2 border-gray-200 dark:border-[#314158]'"
+              :class="isCurrentWordSaved ? 'bg-[#ffc800] text-white' : 'bg-white dark:bg-[#1a2730] text-gray-400 dark:text-gray-500 border-2 border-gray-200 dark:border-[#314158]'"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" :fill="isSaved ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" :fill="isCurrentWordSaved ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
               </svg>
             </button>
@@ -520,22 +564,22 @@ onUnmounted(() => {
           <div
             ref="learnedBtnRef"
             class="flex-1 relative"
-            @click="!vocabStore.isWordLearned(collectionId, currentWord.id) && markLearned()"
+            @click="!isCurrentWordLearned && markLearned()"
           >
             <div
               class="absolute inset-x-0 bottom-0 h-[calc(100%-2px)] rounded-xl"
-              :class="vocabStore.isWordLearned(collectionId, currentWord.id) ? 'bg-[#46a302]' : 'bg-[#46a302]'"
+              :class="isCurrentWordLearned ? 'bg-[#46a302]' : 'bg-[#46a302]'"
             />
             <button
               class="relative w-full h-14 rounded-xl text-white font-extrabold text-sm transition-transform flex items-center justify-center"
               :class="[
                 showCelebration ? 'celebrate-pulse' : '',
-                vocabStore.isWordLearned(collectionId, currentWord.id)
+                isCurrentWordLearned
                   ? 'bg-[#58cc02] translate-y-0 cursor-default opacity-80 dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)]'
                   : 'bg-[#58cc02] -translate-y-1 active:translate-y-0 dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)]'
               ]"
             >
-              {{ vocabStore.isWordLearned(collectionId, currentWord.id) ? '✓ ' + t('vocabulary.learned') : t('vocabulary.learn.mark_learned') }}
+              {{ isCurrentWordLearned ? '✓ ' + t('vocabulary.learned') : t('vocabulary.learn.mark_learned') }}
             </button>
           </div>
 

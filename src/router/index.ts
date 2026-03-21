@@ -106,6 +106,33 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/activity',
+    name: 'Activity',
+    component: () => import('@/pages/ActivityCalendarPage.vue'),
+    meta: {
+      requiresAuth: true,
+      hideNavbar: true
+    }
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('@/pages/NotificationsPage.vue'),
+    meta: {
+      requiresAuth: true,
+      hideNavbar: true
+    }
+  },
+  {
+    path: '/saved/words',
+    name: 'SavedWords',
+    component: () => import('@/pages/SavedWordsPage.vue'),
+    meta: {
+      requiresAuth: true,
+      hideNavbar: true
+    }
+  },
+  {
     path: '/coming-soon',
     name: 'ComingSoon',
     component: () => import('@/pages/ComingSoonPage.vue'),

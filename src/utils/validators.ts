@@ -12,6 +12,12 @@ export const validatePhone = (phone: string): boolean => {
   return false
 }
 
+export const cleanName = (name: string): string => {
+  if (!name) return ''
+  // Faqat harflar, probel, apostrof, defis qoldirish — emoji/stiker olib tashlash
+  return name.replace(/[^\p{L}\s'-]/gu, '').trim()
+}
+
 export const validateName = (name: string): boolean => {
   if (!name || name.trim().length < 2) {
     return false

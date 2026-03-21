@@ -9,12 +9,20 @@ export interface Category {
   updatedAt: string
 }
 
+export interface CollectionStars {
+  vocabulary: boolean
+  writing: boolean
+  quiz: boolean
+}
+
 export interface Collection {
   id: string
   categoryId: string
   name: TranslatedField
   wordCount: number
   createdAt: string
+  stars?: CollectionStars
+  totalStars?: number
 }
 
 export interface VocabularyItem {
@@ -24,6 +32,7 @@ export interface VocabularyItem {
   transcription?: string | null
   example?: string | null
   exampleTranslate?: TranslatedField | null
+  learned?: boolean
 }
 
 // Client category (tanlangan)

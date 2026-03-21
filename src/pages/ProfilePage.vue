@@ -5,6 +5,8 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { useTheme } from '@/composables/useTheme'
 import { useLanguage, languages } from '@/composables/useLanguage'
 import { useTelegram } from '@/composables/useTelegram'
+import { useUIToast } from '@/composables/useUIToast'
+import { authApi } from '@/api/endpoints/auth'
 import { APP_VERSION } from '@/utils/constants'
 
 const { t } = useI18n()
@@ -12,6 +14,41 @@ const authStore = useAuthStore()
 const { theme, toggleTheme } = useTheme()
 const { currentLanguage, setLanguage } = useLanguage()
 const { hapticImpact } = useTelegram()
+const toast = useUIToast()
+
+const avatarUrl = computed(() => {
+  const url = authStore.user?.avatarUrl
+  if (!url) return null
+  // Agar relative URL bo'lsa, backend URL qo'shish
+  if (url.startsWith('/')) return url
+  return url
+})
+
+const isRefreshing = ref(false)
+
+const refreshAvatar = async () => {
+  if (isRefreshing.value) return
+  isRefreshing.value = true
+  hapticImpact('light')
+
+  try {
+    // Avval Telegram SDK'dan photo_url olishga harakat qilamiz
+    const photoUrl = window.Telegram?.WebApp?.initDataUnsafe?.user?.photo_url
+    const res = await authApi.refreshAvatar(photoUrl || '')
+
+    if (res.data.avatarUrl && authStore.user) {
+      authStore.user.avatarUrl = res.data.avatarUrl
+      localStorage.setItem('user', JSON.stringify(authStore.user))
+      toast.success('Avatar yangilandi')
+    } else {
+      toast.warning('Avatar topilmadi')
+    }
+  } catch {
+    toast.error('Xatolik yuz berdi')
+  } finally {
+    isRefreshing.value = false
+  }
+}
 
 const isDark = computed(() => theme.value === 'dark')
 
@@ -52,24 +89,26 @@ const handleRate = () => {
     <!-- Profile Header -->
     <div class="bg-white dark:bg-[#1a2730] px-4 pt-4 pb-5">
       <div class="flex items-center gap-3">
-        <div class="relative">
-          <div class="w-14 h-14 rounded-full bg-[#58cc02] flex items-center justify-center">
-            <span class="text-lg font-extrabold text-white">
-              {{ authStore.user?.firstName?.charAt(0) }}{{ authStore.user?.lastName?.charAt(0) }}
-            </span>
+        <div class="relative cursor-pointer" @click="refreshAvatar">
+          <img
+            v-if="avatarUrl"
+            :src="avatarUrl"
+            class="w-14 h-14 rounded-full object-cover border-2 border-[#58cc02]"
+          />
+          <img v-else src="@/assets/images/default-avatar.svg" class="w-14 h-14 rounded-full" />
+          <!-- Refresh badge -->
+          <div class="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-[#1cb0f6] rounded-full border-2 border-white dark:border-[#1a2730] flex items-center justify-center">
+            <svg class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182" />
+            </svg>
           </div>
-          <!-- Online badge -->
-          <div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-[#58cc02] rounded-full border-2 border-white dark:border-[#1a2730]" />
         </div>
         <div class="flex-1">
           <h1 class="text-base font-extrabold text-gray-900 dark:text-white">
             {{ authStore.fullName }}
           </h1>
-          <div class="flex items-center gap-1 mt-0.5">
-            <svg class="w-3 h-3 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            </svg>
-            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold">Beginner</span>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="text-gray-400 dark:text-gray-500 text-[11px] font-semibold">ID: {{ authStore.user?.telegramId }}</span>
           </div>
         </div>
       </div>

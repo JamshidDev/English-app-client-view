@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { validateName } from '@/utils/validators'
+import { validateName, cleanName } from '@/utils/validators'
 import { useTelegram } from '@/composables/useTelegram'
 
 const props = defineProps<{
@@ -18,15 +18,27 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 const { hapticImpact, hapticNotification } = useTelegram()
+const tg = window.Telegram?.WebApp
+
+// Telegram'dan ism/familiya olish va stiker/emoji filtrlash
+onMounted(() => {
+  const user = tg?.initDataUnsafe?.user
+  if (user && !props.firstName) {
+    const fn = cleanName(user.first_name || '')
+    const ln = cleanName(user.last_name || '')
+    if (fn) emit('update:firstName', fn)
+    if (ln) emit('update:lastName', ln)
+  }
+})
 
 const firstNameLocal = computed({
   get: () => props.firstName,
-  set: (value) => emit('update:firstName', value)
+  set: (value) => emit('update:firstName', cleanName(value))
 })
 
 const lastNameLocal = computed({
   get: () => props.lastName,
-  set: (value) => emit('update:lastName', value)
+  set: (value) => emit('update:lastName', cleanName(value))
 })
 
 const firstNameError = ref('')

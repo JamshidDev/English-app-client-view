@@ -156,26 +156,22 @@ const getName = (name: { uz: string; ru: string }) => {
                   <h3 class="font-bold text-sm text-gray-900 dark:text-white">
                     {{ getName(collection.name) }}
                   </h3>
-                  <p class="text-xs text-gray-400 dark:text-gray-500">
-                    {{ collection.wordCount }} {{ t('vocabulary.words_count') }}
-                  </p>
+                  <div class="flex items-center gap-1.5">
+                    <p class="text-xs text-gray-400 dark:text-gray-500">
+                      {{ collection.wordCount }} {{ t('vocabulary.words_count') }}
+                    </p>
+                    <div class="flex items-center gap-0.5">
+                      <svg v-for="star in ['vocabulary', 'writing', 'quiz']" :key="star" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" :class="collection.stars?.[star] ? 'text-[#ffc800]' : 'text-gray-200 dark:text-gray-600'" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
               </svg>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="mt-2 flex items-center gap-2.5">
-              <div class="flex-1 h-2 bg-gray-100 dark:bg-[#314158] rounded-full overflow-hidden">
-                <div
-                  class="h-full bg-[#58cc02] rounded-full transition-all"
-                  :style="{ width: `${collection.wordCount > 0 ? (vocabStore.getLearnedWordsCount(collection.id) / collection.wordCount) * 100 : 0}%` }"
-                />
-              </div>
-              <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 whitespace-nowrap">{{ vocabStore.getLearnedWordsCount(collection.id) }}/{{ collection.wordCount }}</span>
             </div>
           </div>
         </div>

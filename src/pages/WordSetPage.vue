@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVocabStore } from '@/stores/useVocabStore'
 import { useTelegram } from '@/composables/useTelegram'
 import { useLanguage } from '@/composables/useLanguage'
+import { scoresApi } from '@/api/endpoints/scores'
+import type { CollectionScore } from '@/types/score'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -14,10 +16,20 @@ const { hapticImpact, showBackButton, hideBackButton, onBackButtonClick, offBack
 const { currentLanguage } = useLanguage()
 
 const collectionId = computed(() => route.params.setId as string)
+const scores = ref<CollectionScore | null>(null)
 
 const collection = computed(() =>
   vocabStore.collections.find(c => c.id === collectionId.value) || null
 )
+
+const getScoreValue = (type: 'vocabulary' | 'quiz' | 'writing') => {
+  if (!scores.value) return 0
+  return scores.value[type] ?? 0
+}
+
+const isStar = (type: 'vocabulary' | 'quiz' | 'writing') => {
+  return scores.value?.stars?.[type] ?? false
+}
 
 const getName = (name: { uz: string; ru: string }) => {
   if (currentLanguage.value === 'ru') return name.ru
@@ -40,13 +52,23 @@ const navigateToAction = (action: string) => {
   router.push(`/vocabulary/set/${collectionId.value}/${action}`)
 }
 
+const fetchScores = async () => {
+  try {
+    const res = await scoresApi.getByCollection(collectionId.value)
+    scores.value = res.data
+  } catch {
+    scores.value = null
+  }
+}
+
 onMounted(async () => {
   vocabStore.initVocab()
   showBackButton()
   onBackButtonClick(handleBack)
   await Promise.all([
     vocabStore.fetchCollection(collectionId.value),
-    vocabStore.fetchWords(collectionId.value)
+    vocabStore.fetchWords(collectionId.value),
+    fetchScores()
   ])
 })
 
@@ -99,7 +121,7 @@ onUnmounted(() => {
             <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#ffc800] mb-1" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
             </svg>
-            <span class="text-4xl font-black text-[#e6a800] dark:text-[#ffc800] leading-none">0</span>
+            <span class="text-4xl font-black text-[#e6a800] dark:text-[#ffc800] leading-none">{{ scores?.totalStars ?? 0 }}</span>
             <span class="text-[10px] font-extrabold text-[#c49000] dark:text-[#d4a017] uppercase tracking-widest mt-1">{{ t('vocabulary.actions.score') }}</span>
           </div>
         </div>
@@ -117,7 +139,8 @@ onUnmounted(() => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                 </svg>
               </div>
-              <span class="text-2xl font-black text-[#58cc02] leading-none">0</span>
+              <span class="text-2xl font-black text-[#58cc02] leading-none">{{ getScoreValue('vocabulary') }}</span>
+              <svg v-if="isStar('vocabulary')" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#ffc800]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <span class="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{{ t('vocabulary.actions.learn') }}</span>
             </div>
             <!-- Writing -->
@@ -127,7 +150,8 @@ onUnmounted(() => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                 </svg>
               </div>
-              <span class="text-2xl font-black text-[#1cb0f6] leading-none">0</span>
+              <span class="text-2xl font-black text-[#1cb0f6] leading-none">{{ getScoreValue('writing') }}</span>
+              <svg v-if="isStar('writing')" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#ffc800]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <span class="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{{ t('vocabulary.actions.writing') }}</span>
             </div>
             <!-- Test -->
@@ -137,7 +161,8 @@ onUnmounted(() => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
               </div>
-              <span class="text-2xl font-black text-[#ce82ff] leading-none">0</span>
+              <span class="text-2xl font-black text-[#ce82ff] leading-none">{{ getScoreValue('quiz') }}</span>
+              <svg v-if="isStar('quiz')" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#ffc800]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <span class="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{{ t('vocabulary.actions.test') }}</span>
             </div>
           </div>
