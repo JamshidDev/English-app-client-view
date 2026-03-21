@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useTelegram } from '@/composables/useTelegram'
 import { useLanguage } from '@/composables/useLanguage'
 import { savedApi } from '@/api/endpoints/saved'
@@ -9,7 +8,6 @@ import { useUIToast } from '@/composables/useUIToast'
 
 const toast = useUIToast()
 
-const { t } = useI18n()
 const router = useRouter()
 const { hapticImpact, showBackButton, hideBackButton, onBackButtonClick, offBackButtonClick } = useTelegram()
 const { currentLanguage } = useLanguage()
