@@ -430,6 +430,21 @@ html.dark .van-action-sheet__gap {
   background-color: #131f24 !important;
 }
 
+/* Vant Toast - always dark background */
+.van-toast {
+  background: rgba(0, 0, 0, 0.88) !important;
+  color: #fff !important;
+}
+
+.van-toast__text {
+  color: #fff !important;
+}
+
+.van-toast--success .van-icon,
+.van-toast--fail .van-icon {
+  color: #fff !important;
+}
+
 /* Vant Overlay Dark Mode */
 html.dark .van-overlay {
   background-color: rgba(0, 0, 0, 0.7) !important;

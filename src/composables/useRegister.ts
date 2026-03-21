@@ -54,11 +54,15 @@ export function useRegister() {
     try {
       const tgId = formData.value.telegramId || telegramId.value || 'demo_user'
 
+      // Telegram avatar URL olish
+      const photoUrl = window.Telegram?.WebApp?.initDataUnsafe?.user?.photo_url
+
       await authStore.register({
         telegramId: tgId,
         firstName: formData.value.firstName,
         lastName: formData.value.lastName || undefined,
-        phone: formData.value.phone || undefined
+        phone: formData.value.phone || undefined,
+        photoUrl: photoUrl || undefined
       })
 
       // Goals ni localStorage da saqlaymiz (API da yo'q)

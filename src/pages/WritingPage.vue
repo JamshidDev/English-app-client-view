@@ -7,6 +7,7 @@ import { useTelegram } from '@/composables/useTelegram'
 import { useLanguage } from '@/composables/useLanguage'
 import { shuffleArray } from '@/utils/helpers'
 import type { VocabularyItem } from '@/types/vocabulary'
+import { writingsApi } from '@/api/endpoints/writings'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -18,6 +19,8 @@ const { currentLanguage } = useLanguage()
 const collectionId = computed(() => route.params.setId as string)
 
 const shuffledWords = ref<VocabularyItem[]>([])
+const writingId = ref<string | null>(null)
+const writingScore = ref<{ correctAnswers: number; totalQuestions: number; percentage: number; score: number } | null>(null)
 const currentIndex = ref(0)
 const userInput = ref('')
 const isChecked = ref(false)
@@ -145,16 +148,62 @@ const cancelExit = () => {
   showExitConfirm.value = false
 }
 
-const checkAnswer = () => {
+const checkAnswer = async () => {
   if (!currentWord.value || isChecked.value) return
 
   hapticImpact('medium')
   isChecked.value = true
 
-  const normalizedInput = userInput.value.trim().toLowerCase()
-  const normalizedAnswer = currentWord.value.word.toLowerCase()
+  // Backend API ga yuborish
+  if (writingId.value) {
+    try {
+      const res = await writingsApi.submitAnswer(writingId.value, currentWord.value.id, userInput.value.trim())
+      isCorrect.value = res.data.correct
+      correctCount.value = res.data.correctAnswers
 
-  isCorrect.value = normalizedInput === normalizedAnswer
+      if (res.data.completed) {
+        // Auto-completed by backend
+        answersMap.value.set(currentIndex.value, {
+          input: userInput.value.trim(),
+          correct: isCorrect.value
+        })
+
+        if (isCorrect.value) {
+          hapticNotification('success')
+          playCorrectSound()
+        } else {
+          hapticNotification('error')
+          playIncorrectSound()
+        }
+
+        cancelAutoAdvance()
+        autoAdvanceTimer = setTimeout(() => {
+          autoAdvanceTimer = null
+          isComplete.value = true
+          hapticNotification('success')
+          const pct = res.data.totalQuestions > 0 ? (res.data.correctAnswers / res.data.totalQuestions) * 100 : 0
+          writingScore.value = {
+            correctAnswers: res.data.correctAnswers,
+            totalQuestions: res.data.totalQuestions,
+            percentage: Math.round(pct),
+            score: pct >= 90 ? 1 : pct >= 50 ? 0.5 : 0
+          }
+        }, 1200)
+        return
+      }
+    } catch (error) {
+      // Fallback: lokal tekshirish
+      const normalizedInput = userInput.value.trim().toLowerCase()
+      const normalizedAnswer = currentWord.value.word.toLowerCase()
+      isCorrect.value = normalizedInput === normalizedAnswer
+      if (isCorrect.value) correctCount.value++
+    }
+  } else {
+    const normalizedInput = userInput.value.trim().toLowerCase()
+    const normalizedAnswer = currentWord.value.word.toLowerCase()
+    isCorrect.value = normalizedInput === normalizedAnswer
+    if (isCorrect.value) correctCount.value++
+  }
 
   // Save to answersMap
   answersMap.value.set(currentIndex.value, {
@@ -163,7 +212,6 @@ const checkAnswer = () => {
   })
 
   if (isCorrect.value) {
-    correctCount.value++
     hapticNotification('success')
     playCorrectSound()
   } else {
@@ -236,10 +284,24 @@ const goToQuestion = (targetIndex: number) => {
   setTimeout(() => { isAnimating.value = false }, 250)
 }
 
-const completeWriting = () => {
+const completeWriting = async () => {
   showFinishConfirm.value = false
   isComplete.value = true
   hapticNotification('success')
+  if (writingId.value) {
+    try {
+      const res = await writingsApi.complete(writingId.value)
+      const pct = res.data.totalQuestions > 0 ? (res.data.correctAnswers / res.data.totalQuestions) * 100 : 0
+      writingScore.value = {
+        correctAnswers: res.data.correctAnswers,
+        totalQuestions: res.data.totalQuestions,
+        percentage: Math.round(pct),
+        score: pct >= 90 ? 1 : pct >= 50 ? 0.5 : 0
+      }
+    } catch (error) {
+      console.error('Failed to complete writing:', error)
+    }
+  }
 }
 
 const restart = () => {
@@ -292,10 +354,25 @@ onMounted(async () => {
   vocabStore.initVocab()
   showBackButton()
   onBackButtonClick(handleBack)
-  await vocabStore.fetchWords(collectionId.value)
-  if (vocabStore.words.length > 0) {
-    shuffledWords.value = shuffleArray([...vocabStore.words])
+
+  // Backend writing session boshlash
+  try {
+    const res = await writingsApi.start(collectionId.value)
+    writingId.value = res.data.id
+    // Backend'dan kelgan savollarni VocabularyItem formatiga moslashtirish
+    shuffledWords.value = res.data.questions.map(q => ({
+      id: q.wordId,
+      word: q.correctWord,
+      wordTranslate: q.wordTranslate,
+    })) as VocabularyItem[]
+  } catch {
+    // Fallback: lokal so'zlardan
+    await vocabStore.fetchWords(collectionId.value)
+    if (vocabStore.words.length > 0) {
+      shuffledWords.value = shuffleArray([...vocabStore.words])
+    }
   }
+
   isLoading.value = false
   setTimeout(() => {
     scrollToActiveBox()
