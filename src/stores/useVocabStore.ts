@@ -61,7 +61,7 @@ export const useVocabStore = defineStore('vocab', () => {
   const fetchCollections = async (categoryId: string) => {
     isLoadingCollections.value = true
     try {
-      const res = await collectionsApi.getByCategory(categoryId, { page: 1, pageSize: 20 })
+      const res = await collectionsApi.getByCategory(categoryId, { page: 1, pageSize: 50 })
       collections.value = res.data.data
     } catch (error) {
       console.error('Failed to fetch collections:', error)

@@ -3,20 +3,18 @@ import { useTelegram } from './useTelegram'
 
 type Theme = 'light' | 'dark'
 
-const theme = ref<Theme>('light')
+const theme = ref<Theme>('dark')
 
 export function useTheme() {
-  const { colorScheme, setHeaderColor, setBackgroundColor } = useTelegram()
+  const { setHeaderColor, setBackgroundColor } = useTelegram()
 
   const initTheme = () => {
     const savedTheme = localStorage.getItem('theme') as Theme | null
 
     if (savedTheme) {
       theme.value = savedTheme
-    } else if (colorScheme.value) {
-      theme.value = colorScheme.value
     } else {
-      theme.value = (import.meta.env.VITE_DEFAULT_THEME as Theme) || 'light'
+      theme.value = (import.meta.env.VITE_DEFAULT_THEME as Theme) || 'dark'
     }
 
     applyTheme()

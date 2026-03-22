@@ -118,6 +118,36 @@ export function useAudio() {
     isSpeaking.value = false
   }
 
+  const playFromUrl = (audioUrl: string) => {
+    stop()
+    isSpeaking.value = true
+
+    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || ''
+    const fullUrl = audioUrl.startsWith('http') ? audioUrl : `${baseUrl}${audioUrl}`
+
+    currentAudio = new Audio(fullUrl)
+    currentAudio.onended = () => {
+      isSpeaking.value = false
+      currentAudio = null
+    }
+    currentAudio.onerror = () => {
+      isSpeaking.value = false
+      currentAudio = null
+    }
+    currentAudio.play().catch(() => {
+      isSpeaking.value = false
+      currentAudio = null
+    })
+  }
+
+  const speakWord = (text: string, audioUrl?: string | null) => {
+    if (audioUrl) {
+      playFromUrl(audioUrl)
+    } else {
+      speak(text, 'en')
+    }
+  }
+
   const speakEnglish = (text: string) => speak(text, 'en')
   const speakUzbek = (text: string) => speak(text, 'uz')
   const speakRussian = (text: string) => speak(text, 'ru')
@@ -144,6 +174,8 @@ export function useAudio() {
   return {
     isSpeaking,
     speak,
+    speakWord,
+    playFromUrl,
     speakEnglish,
     speakUzbek,
     speakRussian,

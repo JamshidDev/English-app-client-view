@@ -20,6 +20,7 @@ export interface Collection {
   categoryId: string
   name: TranslatedField
   wordCount: number
+  isNew: boolean
   createdAt: string
   stars?: CollectionStars
   totalStars?: number
@@ -32,6 +33,7 @@ export interface VocabularyItem {
   transcription?: string | null
   example?: string | null
   exampleTranslate?: TranslatedField | null
+  audioUrl?: string | null
   learned?: boolean
 }
 

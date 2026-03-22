@@ -46,7 +46,7 @@
   },
   "modules": {
     "vocabulary": "Vocabulary",
-    "vocabulary_desc": "So'zlarni o'rganing",
+    "vocabulary_desc": "So'zlarni o'rganish",
     "grammar": "Grammatika",
     "grammar_desc": "Grammatika qoidalari",
     "listening": "Listening",
@@ -60,7 +60,7 @@
     "greeting": "Salom",
     "select_module": "Bo'limni tanlang",
     "daily_goal": "Bugungi maqsad",
-    "sections": "Bo'limlar",
+    "sections": "Asosiy bo'limlar",
     "streak": "Streak",
     "words_count": "So'zlar"
   },

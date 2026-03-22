@@ -17,6 +17,7 @@ const { currentLanguage } = useLanguage()
 
 const collectionId = computed(() => route.params.setId as string)
 const scores = ref<CollectionScore | null>(null)
+const showWordList = ref(false)
 
 const collection = computed(() =>
   vocabStore.collections.find(c => c.id === collectionId.value) || null
@@ -36,6 +37,56 @@ const getName = (name: { uz: string; ru: string }) => {
   return name.uz
 }
 
+
+const speakAudio = ref<HTMLAudioElement | null>(null)
+
+const speakWord = (word: string, audioUrl?: string | null) => {
+  hapticImpact('light')
+
+  if (speakAudio.value) {
+    speakAudio.value.pause()
+  }
+
+  // Bazadan kelgan audio bo'lsa — uni o'ynatamiz
+  if (audioUrl) {
+    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || ''
+    const fullUrl = audioUrl.startsWith('http') ? audioUrl : `${baseUrl}${audioUrl}`
+    const audio = new Audio(fullUrl)
+    speakAudio.value = audio
+    audio.onerror = () => speakWordFallback(word)
+    audio.play().catch(() => speakWordFallback(word))
+    return
+  }
+
+  speakWordFallback(word)
+}
+
+const speakWordFallback = (word: string) => {
+  const url = `https://api.dictionaryapi.dev/media/pronunciations/en/${word.toLowerCase()}-us.mp3`
+  const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${encodeURIComponent(word)}`
+
+  const audio = new Audio(url)
+  speakAudio.value = audio
+
+  audio.onerror = () => {
+    const fallback = new Audio(googleUrl)
+    speakAudio.value = fallback
+    fallback.onerror = () => {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word)
+        utterance.lang = 'en-US'
+        utterance.rate = 0.9
+        speechSynthesis.cancel()
+        speechSynthesis.speak(utterance)
+      }
+    }
+    fallback.play().catch(() => {})
+  }
+
+  audio.play().catch(() => {
+    audio.onerror?.(new Event('error'))
+  })
+}
 
 const actions = [
   { key: 'learn', route: 'learn', bg: '#58cc02', shadow: '#46a302' },
@@ -97,7 +148,7 @@ onUnmounted(() => {
           </h1>
         </div>
         <!-- Words count badge -->
-        <div v-if="vocabStore.words.length > 0" class="flex items-center gap-1.5 bg-[#58cc02]/10 dark:bg-[#58cc02]/20 px-2.5 py-1 rounded-full">
+        <div v-if="vocabStore.words.length > 0" @click="showWordList = true; hapticImpact('light')" class="flex items-center gap-1.5 bg-[#58cc02]/10 dark:bg-[#58cc02]/20 px-2.5 py-1 rounded-full cursor-pointer active:scale-95 transition-transform">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#58cc02]" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
           </svg>
@@ -266,4 +317,86 @@ onUnmounted(() => {
       </p>
     </div>
   </div>
+
+  <!-- Word List Action Sheet -->
+  <Teleport to="body">
+    <Transition name="overlay">
+      <div v-if="showWordList" class="fixed inset-0 bg-black/50 z-50" @click="showWordList = false" />
+    </Transition>
+    <Transition name="sheet">
+      <div v-if="showWordList" class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#1a2730] rounded-t-3xl max-h-[80vh] flex flex-col">
+        <!-- Handle -->
+        <div class="flex justify-center pt-3 pb-2">
+          <div class="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+        </div>
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-5 pb-3 border-b border-gray-100 dark:border-white/5">
+          <div>
+            <h3 class="text-base font-extrabold text-gray-900 dark:text-white">
+              {{ collection ? getName(collection.name) : '' }}
+            </h3>
+            <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{{ vocabStore.words.length }} ta so'z</p>
+          </div>
+          <button @click="showWordList = false" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Words list -->
+        <div class="overflow-y-auto flex-1 px-5 py-3">
+          <div
+            v-for="(word, index) in vocabStore.words"
+            :key="word.id"
+            class="flex items-center gap-3 py-3"
+            :class="{ 'border-b border-gray-50 dark:border-white/5': index < vocabStore.words.length - 1 }"
+          >
+            <span class="w-6 text-center text-[11px] font-bold text-gray-300 dark:text-gray-600">{{ index + 1 }}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-[15px] text-gray-900 dark:text-white">{{ word.word }}</span>
+                <span v-if="word.transcription" class="text-[11px] text-gray-400 dark:text-gray-500">{{ word.transcription }}</span>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                {{ currentLanguage === 'ru' ? word.wordTranslate?.ru : word.wordTranslate?.uz }}
+              </p>
+            </div>
+            <!-- Sound button -->
+            <button
+              @click.stop="word.audioUrl && speakWord(word.word, word.audioUrl)"
+              :disabled="!word.audioUrl"
+              class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
+              :class="word.audioUrl ? 'bg-[#1cb0f6]/10 active:scale-90' : 'bg-gray-100 dark:bg-white/5 opacity-30 cursor-not-allowed'"
+            >
+              <svg class="w-4 h-4" :class="word.audioUrl ? 'text-[#1cb0f6]' : 'text-gray-400'" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
+
+<style scoped>
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity 0.3s ease;
+}
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+}
+
+.sheet-enter-active,
+.sheet-leave-active {
+  transition: transform 0.3s ease;
+}
+.sheet-enter-from,
+.sheet-leave-to {
+  transform: translateY(100%);
+}
+</style>

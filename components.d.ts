@@ -13,6 +13,7 @@ declare module 'vue' {
     BoardHeader: typeof import('./src/components/board/BoardHeader.vue')['default']
     CategoryPinList: typeof import('./src/components/vocabulary/CategoryPinList.vue')['default']
     CongratsStep: typeof import('./src/components/register/CongratsStep.vue')['default']
+    FeatureBanner: typeof import('./src/components/home/FeatureBanner.vue')['default']
     GoalStep: typeof import('./src/components/register/GoalStep.vue')['default']
     LanguageSwitcher: typeof import('./src/components/profile/LanguageSwitcher.vue')['default']
     LessonComplete: typeof import('./src/components/lessons/LessonComplete.vue')['default']
