@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useI18n } from 'vue-i18n'
@@ -33,12 +33,8 @@ onMounted(async () => {
   } catch {}
 })
 
-const wordsLearned = computed(() => authStore.userStats.wordsLearned)
 
 // Kundalik maqsad — 10 ta so'z
-const dailyGoal = 10
-const dailyProgress = computed(() => Math.min(wordsLearned.value, dailyGoal))
-const dailyPercent = computed(() => Math.round((dailyProgress.value / dailyGoal) * 100))
 </script>
 
 <template>
@@ -110,48 +106,8 @@ const dailyPercent = computed(() => Math.round((dailyProgress.value / dailyGoal)
     <!-- Content -->
     <div class="px-4 pt-4 pb-6">
 
-      <!-- Daily Progress Banner (3D Card) -->
-      <div class="relative mb-5">
-        <!-- Shadow layer -->
-        <div class="absolute inset-x-0 bottom-0 h-[calc(100%-2px)] rounded-2xl bg-[#46a302]" />
-        <!-- Main card -->
-        <div class="relative bg-[#58cc02] rounded-2xl p-4 -translate-y-1 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <p class="text-white/70 text-xs font-bold">{{ t('home.daily_goal') }}</p>
-              <p class="text-white text-lg font-extrabold">{{ dailyProgress }}/{{ dailyGoal }} {{ t('home.words_count').toLowerCase() }}</p>
-            </div>
-            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <span class="text-2xl">🎯</span>
-            </div>
-          </div>
-          <!-- Progress Bar -->
-          <div class="w-full h-3 bg-white/20 rounded-full overflow-hidden">
-            <div
-              class="h-full bg-white rounded-full transition-all duration-500"
-              :style="{ width: dailyPercent + '%' }"
-            />
-          </div>
-          <p class="text-white/70 text-[11px] font-bold mt-1.5 text-right">{{ dailyPercent }}%</p>
-        </div>
-      </div>
+      <!-- Feature Banner Slider -->
 
-      <!-- Saved Section -->
-      <div v-if="savedCounts.words > 0" class="mb-5">
-        <h2 class="text-gray-900 dark:text-white text-[15px] font-extrabold mb-3">Saqlangan</h2>
-        <div @click="router.push('/saved/words')" class="relative cursor-pointer">
-          <div class="absolute inset-x-0 bottom-0 h-[calc(100%-2px)] rounded-2xl bg-[#e0a800]" />
-          <div class="relative rounded-2xl bg-[#ffc800] px-4 py-3 -translate-y-1 active:translate-y-0 transition-transform">
-            <div class="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" /></svg>
-              <div>
-                <p class="text-white font-extrabold text-sm">Saqlangan so'zlar</p>
-                <p class="text-white/80 text-xs font-bold">{{ savedCounts.words }} ta</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Section Title -->
       <div class="flex items-center justify-between mb-3">
@@ -165,6 +121,33 @@ const dailyPercent = computed(() => Math.round((dailyProgress.value / dailyGoal)
           :key="module.id"
           :module="module"
         />
+
+      </div>
+
+      <!-- Divider with icon -->
+      <div class="flex items-center gap-3 my-5">
+        <div class="flex-1 h-px bg-gray-200 dark:bg-white/10" />
+        <svg class="w-6 h-6 text-gray-300 dark:text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8.25 3l-3.75 5.25L12 21l7.5-12.75L15.75 3h-7.5z" />
+        </svg>
+        <div class="flex-1 h-px bg-gray-200 dark:bg-white/10" />
+      </div>
+
+      <!-- Saved Card -->
+      <div
+        @click="router.push('/saved/words')"
+        class="relative cursor-pointer active:scale-[0.97] transition-transform"
+      >
+        <div class="absolute inset-x-0 bottom-0 h-[calc(100%-3px)] rounded-2xl dark:!bg-[#2a3440]" :style="{ backgroundColor: '#d1d5db' }" />
+        <div class="relative rounded-2xl px-4 py-4 -translate-y-[5px] active:translate-y-0 transition-transform border border-gray-100 dark:border-white/5 bg-white dark:bg-[#1a2730] flex items-center gap-3 min-h-[72px]">
+          <svg class="w-5 h-5 text-[#ffc800] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+          </svg>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-[13px] text-gray-900 dark:text-white">Saqlangan</p>
+            <p class="text-[11px] mt-0.5 text-gray-400 dark:text-gray-500">{{ savedCounts.words }} ta so'z</p>
+          </div>
+        </div>
       </div>
     </div>
 

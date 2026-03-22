@@ -5,18 +5,15 @@ defineProps<{
 </script>
 
 <template>
-  <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-gray-900">
-    <div class="w-20 h-20 mb-6 bg-primary-500 rounded-2xl flex items-center justify-center shadow-lg">
-      <span class="text-4xl">🇬🇧</span>
+  <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#131f24]">
+    <h1 class="text-xl font-bold text-white mb-1">EasyEnglish</h1>
+    <p class="text-sm text-gray-500">Ingliz tilini o'rganish ilovasi</p>
+
+    <div class="mt-8">
+      <div class="w-8 h-8 border-3 border-[#58cc02] border-t-transparent rounded-full animate-spin" />
     </div>
 
-    <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-2">English Booster Pro</h1>
-
-    <div class="mt-6">
-      <div class="w-8 h-8 border-3 border-primary-500 border-t-transparent rounded-full animate-spin" />
-    </div>
-
-    <p v-if="text" class="text-gray-500 dark:text-gray-400 text-sm mt-4">{{ text }}</p>
+    <p v-if="text" class="text-gray-400 text-sm mt-4">{{ text }}</p>
   </div>
 </template>
 

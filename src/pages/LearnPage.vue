@@ -17,7 +17,7 @@ const route = useRoute()
 const router = useRouter()
 const vocabStore = useVocabStore()
 const { hapticImpact, hapticNotification, showBackButton, hideBackButton, onBackButtonClick, offBackButtonClick } = useTelegram()
-const { speakEnglish, isSpeaking } = useAudio()
+const { speakWord } = useAudio()
 const { currentLanguage } = useLanguage()
 
 const collectionId = computed(() => route.params.setId as string)
@@ -198,9 +198,11 @@ const cancelExit = () => {
 const playAudio = () => {
   if (currentWord.value) {
     hapticImpact('light')
-    speakEnglish(currentWord.value.word)
+    speakWord(currentWord.value.word, currentWord.value.audioUrl)
   }
 }
+
+const hasAudio = () => !!currentWord.value?.audioUrl
 
 const nextWord = async () => {
   if (isAnimating.value) return
@@ -506,8 +508,9 @@ onUnmounted(() => {
                     </p>
                     <button
                       @click="playAudio"
-                      class="w-7 h-7 bg-[#1cb0f6] rounded-full flex items-center justify-center flex-shrink-0 active:scale-90 transition-transform"
-                      :class="{ 'animate-pulse': isSpeaking }"
+                      :disabled="!hasAudio()"
+                      class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 active:scale-90 transition-all"
+                      :class="hasAudio() ? 'bg-[#1cb0f6]' : 'bg-gray-300 dark:bg-gray-600 opacity-50 cursor-not-allowed'"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />

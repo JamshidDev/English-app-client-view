@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useVocabStore } from '@/stores/useVocabStore'
@@ -13,17 +13,23 @@ const { hapticImpact } = useTelegram()
 const { currentLanguage } = useLanguage()
 
 onMounted(async () => {
-  vocabStore.resetCollections()
   vocabStore.initVocab()
 
-  try {
-    await vocabStore.fetchCategories()
-    if (vocabStore.selectedCategoryId) {
+  // Agar categorylar allaqachon yuklangan bo'lsa qayta yuklamaslik
+  if (vocabStore.categories.length === 0) {
+    try {
+      await vocabStore.fetchCategories()
+    } catch {}
+  }
+
+  // Agar tanlangan category bor va collectionlar yo'q bo'lsa yuklash
+  if (vocabStore.selectedCategoryId && vocabStore.collections.length === 0) {
+    try {
       await vocabStore.fetchCollections(vocabStore.selectedCategoryId)
-    } else {
+    } catch {
       vocabStore.isLoadingCollections = false
     }
-  } catch {
+  } else if (!vocabStore.selectedCategoryId) {
     vocabStore.isLoadingCollections = false
   }
 })
@@ -31,6 +37,7 @@ onMounted(async () => {
 const handleSelectCategory = async (categoryId: string) => {
   hapticImpact('light')
   await vocabStore.selectCategory(categoryId)
+  scrollActiveTabToCenter()
 }
 
 const openCollection = (collectionId: string) => {
@@ -46,6 +53,53 @@ const openSettings = () => {
 const getName = (name: { uz: string; ru: string }) => {
   if (currentLanguage.value === 'ru') return name.ru
   return name.uz
+}
+
+// Tab scroll to center
+const tabsContainer = ref<HTMLElement | null>(null)
+
+const scrollActiveTabToCenter = () => {
+  nextTick(() => {
+    if (!tabsContainer.value) return
+    const activeBtn = tabsContainer.value.querySelector('.tab-active') as HTMLElement
+    if (!activeBtn) return
+    const container = tabsContainer.value
+    const scrollLeft = activeBtn.offsetLeft - container.offsetWidth / 2 + activeBtn.offsetWidth / 2
+    container.scrollTo({ left: scrollLeft, behavior: 'smooth' })
+  })
+}
+
+// Swipe logic
+const touchStartX = ref(0)
+const touchEndX = ref(0)
+
+const currentCategoryIndex = computed(() => {
+  return vocabStore.categories.findIndex(c => c.id === vocabStore.selectedCategoryId)
+})
+
+const onTouchStart = (e: TouchEvent) => {
+  touchStartX.value = e.touches[0].clientX
+}
+
+const onTouchEnd = (e: TouchEvent) => {
+  touchEndX.value = e.changedTouches[0].clientX
+  const diff = touchStartX.value - touchEndX.value
+  const minSwipe = 50
+
+  if (Math.abs(diff) < minSwipe) return
+
+  const categories = vocabStore.categories
+  if (!categories.length) return
+
+  const currentIdx = currentCategoryIndex.value
+
+  if (diff > 0 && currentIdx < categories.length - 1) {
+    // Swipe left → next category
+    handleSelectCategory(categories[currentIdx + 1].id)
+  } else if (diff < 0 && currentIdx > 0) {
+    // Swipe right → previous category
+    handleSelectCategory(categories[currentIdx - 1].id)
+  }
 }
 
 </script>
@@ -68,19 +122,16 @@ const getName = (name: { uz: string; ru: string }) => {
             {{ t('vocabulary.title') }}
           </h1>
         </div>
-        <!-- Category settings 3D button -->
-        <div class="relative" @click="openSettings">
-          <div class="absolute inset-x-0 bottom-0 h-[calc(100%-1px)] rounded-xl bg-[#46a302]" />
-          <button class="relative w-9 h-9 rounded-xl bg-[#58cc02] -translate-y-[2px] active:translate-y-0 transition-transform flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-            </svg>
-          </button>
-        </div>
+        <!-- Category settings button -->
+        <button @click="openSettings" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-white/10 flex items-center justify-center active:scale-95 transition-transform">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+          </svg>
+        </button>
       </div>
 
       <!-- Category Tabs -->
-      <div class="flex gap-1.5 overflow-x-auto pb-3 -mx-4 px-4 scrollbar-hide">
+      <div ref="tabsContainer" class="flex gap-1.5 overflow-x-auto pb-3 -mx-4 px-4 scrollbar-hide">
         <!-- Loading skeleton -->
         <template v-if="vocabStore.isLoadingCategories">
           <div v-for="i in 4" :key="i" class="h-8 w-24 bg-gray-200 dark:bg-[#243642] rounded-full animate-pulse flex-shrink-0" />
@@ -95,7 +146,7 @@ const getName = (name: { uz: string; ru: string }) => {
             class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase whitespace-nowrap transition-all duration-200 border-2 flex-shrink-0"
             :class="[
               vocabStore.selectedCategoryId === category.id
-                ? 'bg-[#58cc02]/10 text-[#58cc02] border-[#58cc02]'
+                ? 'bg-[#58cc02]/10 text-[#58cc02] border-[#58cc02] tab-active'
                 : 'bg-gray-100 dark:bg-[#243642] text-gray-500 dark:text-gray-400 border-transparent'
             ]"
           >
@@ -106,10 +157,10 @@ const getName = (name: { uz: string; ru: string }) => {
     </div>
 
     <!-- Collections List -->
-    <div class="px-4 py-3 space-y-2">
+    <div class="px-4 py-3 space-y-2" @touchstart="onTouchStart" @touchend="onTouchEnd">
       <!-- Loading -->
       <template v-if="vocabStore.isLoadingCollections">
-        <div v-for="i in 3" :key="i" class="relative mb-2">
+        <div v-for="i in 8" :key="i" class="relative mb-2">
           <div class="absolute inset-x-0 bottom-0 h-[calc(100%-2px)] rounded-2xl bg-gray-200 dark:bg-[#243642]" />
           <div class="relative rounded-2xl bg-gray-100 dark:bg-[#1a2730] px-3.5 py-3 -translate-y-1 animate-pulse border border-gray-100 dark:border-[#314158]">
             <div class="flex items-center justify-between">
@@ -169,9 +220,12 @@ const getName = (name: { uz: string; ru: string }) => {
                 </div>
               </div>
 
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+              <div class="flex items-center gap-1.5">
+                <span v-if="collection.isNew" class="px-1.5 py-0.5 text-[10px] font-bold bg-[#58cc02] text-white rounded-md uppercase tracking-wide">NEW</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>

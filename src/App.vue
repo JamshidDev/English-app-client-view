@@ -39,11 +39,7 @@ onMounted(() => {
       </router-view>
     </AuthLayout>
     <DefaultLayout v-else>
-      <router-view v-slot="{ Component }">
-        <transition name="page" mode="out-in">
-          <component :is="Component" :key="route.path" />
-        </transition>
-      </router-view>
+      <router-view />
     </DefaultLayout>
   </template>
 

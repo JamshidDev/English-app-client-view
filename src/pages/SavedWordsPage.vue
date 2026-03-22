@@ -5,8 +5,10 @@ import { useTelegram } from '@/composables/useTelegram'
 import { useLanguage } from '@/composables/useLanguage'
 import { savedApi } from '@/api/endpoints/saved'
 import { useUIToast } from '@/composables/useUIToast'
+import { useAudio } from '@/composables/useAudio'
 
 const toast = useUIToast()
+const { speakWord } = useAudio()
 
 const router = useRouter()
 const { hapticImpact, showBackButton, hideBackButton, onBackButtonClick, offBackButtonClick } = useTelegram()
@@ -89,9 +91,19 @@ onUnmounted(() => {
                 {{ getTranslation(item.wordTranslate) }}
               </p>
             </div>
+            <!-- Audio button -->
+            <button
+              v-if="item.audioUrl"
+              @click="speakWord(item.word, item.audioUrl)"
+              class="ml-2 w-8 h-8 rounded-full bg-[#1cb0f6]/10 flex items-center justify-center flex-shrink-0 active:scale-90 transition-transform"
+            >
+              <svg class="w-4 h-4 text-[#1cb0f6]" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+              </svg>
+            </button>
             <button
               @click="unsaveWord(item.wordId)"
-              class="ml-3 p-2 text-[#ffc800] hover:text-red-500 transition-colors"
+              class="ml-1 p-2 text-[#ffc800] hover:text-red-500 transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
